@@ -3,6 +3,10 @@
  */
 package org.fc.entity;
 
+import java.util.ArrayList;
+
+import org.fc.data.Contest;
+
 /**
  * @author pskopek
  *
@@ -12,15 +16,21 @@ public class Team {
 	private Long id;
 	
 	private String name;
-	private String location;
+	private String organisation;
 	
+	private ArrayList<Round> rounds;
+	
+	public Team() {
+		id = Contest.getNextDataSeq();
+		rounds = new ArrayList<Round>(Contest.getContest().getNumRounds());
+	}
+	
+	public Team(Long id) {
+		this.id = id;
+	}
 	
 	public Long getId() {
 		return id;
-	}
-	
-	private void setId(Long id) {
-		this.id = id;
 	}
 	
 	public String getName() {
@@ -31,16 +41,31 @@ public class Team {
 		this.name = name;
 	}
 	
-	public String getLocation() {
-		return location;
+	public String getOrganisation() {
+		return organisation;
 	}
-	
-	public void setLocation(String location) {
-		this.location = location;
+
+	public void setOrganisation(String organisation) {
+		this.organisation = organisation;
 	}
+
 	
 	public String toString() {
-		return "[" + id + ": " + getName() + " - " + getLocation() + "]";
+		
+		StringBuilder sbRounds = new StringBuilder("{");
+		for (Round r : rounds)
+			sbRounds.append(r);
+		sbRounds.append("}");		
+		
+		return "[" + id + ":" + getName() + " - " + getOrganisation() + ":" + sbRounds + "]";
+	}
+
+	public ArrayList<Round> getRounds() {
+		return rounds;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 	
 

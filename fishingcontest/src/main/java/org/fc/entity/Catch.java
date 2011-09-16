@@ -13,7 +13,6 @@ public class Catch {
 	
 	private Team team;
 	private int round;
-	
 	private String sector;
 
 	public Long getId() {
