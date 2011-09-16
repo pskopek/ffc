@@ -4,6 +4,7 @@ import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -72,7 +73,12 @@ public class FishingContestApp {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					Contest.getContest().loadFromFile("firstContest.xml");
+					FileDialog fd = new FileDialog(shlFishingContest, SWT.OPEN);
+			        fd.setText("Načítať súbor s pretekom");
+			        String[] filterExt = { "*.xml", "*.*" };
+			        fd.setFilterExtensions(filterExt);
+			        String selected = fd.open();
+					Contest.getContest().loadFromFile(selected);
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
@@ -91,7 +97,12 @@ public class FishingContestApp {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				try {
-					Contest.getContest().dumpToFile("firstContest.xml");
+			        FileDialog fd = new FileDialog(shlFishingContest, SWT.SAVE);
+			        fd.setText("Zapíš aktuálny stav preteku do súboru");
+			        String[] filterExt = { "*.xml" };
+			        fd.setFilterExtensions(filterExt);
+			        String selected = fd.open();
+					Contest.getContest().dumpToFile(selected);
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
