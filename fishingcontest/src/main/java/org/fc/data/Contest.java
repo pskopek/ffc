@@ -26,11 +26,11 @@ public class Contest {
 
 	private int NUM_ROUNDS;
 	
-	private static Long dataSeq = 1L;
+	private Long dataSeq = 1L;
 	
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	
-	private ArrayList<ArrayList<Catch>> round;
+	private ArrayList<ArrayList<Catch>> roundCatch;
 	
 	private static Contest CONTEST = null;
 	
@@ -45,9 +45,10 @@ public class Contest {
 		
 		NUM_ROUNDS = 4;
 		
-		round = new ArrayList<ArrayList<Catch>>(NUM_ROUNDS);
+		
+		roundCatch = new ArrayList<ArrayList<Catch>>(NUM_ROUNDS);
 		for (int i = 0; i < NUM_ROUNDS; i++) {
-			round.add(new ArrayList<Catch>()); 
+			roundCatch.add(new ArrayList<Catch>()); 
 		}
 		
 	}
@@ -78,16 +79,29 @@ public class Contest {
 		return null;
 	}
 	
-	public ArrayList<Catch> getRound(int i) {
-		return round.get(i);
+	public ArrayList<Catch> getRoundCatch(int i) {
+		return roundCatch.get(i);
 	}
 
 	public void addCatch(int r, Catch c) {
-		getRound(r).add(c);
+		getRoundCatch(r).add(c);
 	}
 	
-	public static Long getNextDataSeq() {
+	public Long getNextDataSeq() {
 		return dataSeq++;
+	}
+	
+	public static void createNewContest() {
+		
+		CONTEST.teams.clear();
+		
+		for (ArrayList<Catch> cl: CONTEST.roundCatch) {
+		  cl.clear();
+		}
+		CONTEST.roundCatch.clear();
+		
+		
+		CONTEST = new Contest();
 	}
 	
 	/**

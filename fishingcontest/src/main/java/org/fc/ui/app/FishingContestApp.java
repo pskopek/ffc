@@ -143,7 +143,7 @@ public class FishingContestApp {
 		btnClose.setText("Koniec");
 		shlFishingContest.setTabList(new Control[]{btnContesters, btnNewContest, btnLoadContest, btnDraw, btnResults, btnClose});
 
-		createDefaultTestingContent();
+		// createDefaultTestingContent();
 		
 		shlFishingContest.open();
 		shlFishingContest.layout();
@@ -154,11 +154,11 @@ public class FishingContestApp {
 		}
 	}
 
-	
 	private static void createDefaultTestingContent() {
 		Contest c = Contest.getContest();
 		c.createTestData();
 	}
+
 	public Shell getShlFishingContest() {
 		return shlFishingContest;
 	}

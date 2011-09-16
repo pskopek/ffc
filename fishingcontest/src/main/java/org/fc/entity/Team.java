@@ -18,11 +18,15 @@ public class Team {
 	private String name;
 	private String organisation;
 	
-	private ArrayList<Round> rounds;
+	// plan of team role in each round
+	private ArrayList<Round> roundPlan;
+	// team CIPS gain in each round
+	private ArrayList<Gain> roundGain;
 	
 	public Team() {
-		id = Contest.getNextDataSeq();
-		rounds = new ArrayList<Round>(Contest.getContest().getNumRounds());
+		id = Contest.getContest().getNextDataSeq();
+		roundPlan = new ArrayList<Round>(Contest.getContest().getNumRounds());
+		roundGain = new ArrayList<Gain>(Contest.getContest().getNumRounds());
 	}
 	
 	public Team(Long id) {
@@ -53,20 +57,25 @@ public class Team {
 	public String toString() {
 		
 		StringBuilder sbRounds = new StringBuilder("{");
-		for (Round r : rounds)
+		for (Round r : roundPlan)
 			sbRounds.append(r);
 		sbRounds.append("}");		
 		
 		return "[" + id + ":" + getName() + " - " + getOrganisation() + ":" + sbRounds + "]";
 	}
 
-	public ArrayList<Round> getRounds() {
-		return rounds;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public ArrayList<Round> getRoundPlan() {
+		return roundPlan;
+	}
+
+	public ArrayList<Gain> getRoundGain() {
+		return roundGain;
+	}
+
 	
 
 }
