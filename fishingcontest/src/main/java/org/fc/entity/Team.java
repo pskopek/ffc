@@ -27,6 +27,10 @@ public class Team {
 		id = Contest.getContest().getNextDataSeq();
 		roundPlan = new ArrayList<Round>(Contest.getContest().getNumRounds());
 		roundGain = new ArrayList<Gain>(Contest.getContest().getNumRounds());
+		for (int i = 0; i < Contest.getContest().getNumRounds(); i++) {
+			roundPlan.add(new Round(i));
+			roundGain.add(new Gain());
+		}
 	}
 	
 	public Team(Long id) {
@@ -76,6 +80,40 @@ public class Team {
 		return roundGain;
 	}
 
-	
+	public String getPlanAsText() {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		for (Round r: roundPlan) {
+			
+			if (r.getRole() != null && r.getRole().equals("R")) {
+				sb.append("R[");
+			    sb.append(r.getSector());
+			    sb.append("]");
+			}
+			else if (r.getSector() != null && r.getSector().equals("H")) {
+				sb.append(" Hr ");
+			}
+			else {
+				sb.append(r.getSector());
+			    sb.append("[");
+			    sb.append(r.getRole());
+			    sb.append("]");
+			}
+			
+			sb.append("-");
+			
+		}
+		
+		sb.delete(sb.length() - 1 , sb.length());
+		String ret = sb.toString();
+		
+		String[] spl = ret.split("null");
+		
+		if (spl.length > 3)
+			return "";
+		else
+			return ret;
+	}
 
 }

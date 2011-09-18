@@ -11,10 +11,14 @@ public class Round {
 
 	private int round;
 	private String sector;  // A,B,H - hradza (dam), 
-	private String role;    // Rozhodca, Hacik, Zadak
+	private String role;    // Rozhodca, Prednik, Zadak
 	
 	private int location; // can be used as boat number or location number in cases of dam sector 
 
+	public Round(int round) {
+		this.round = round;
+	}
+	
 	public int getRound() {
 		return round;
 	}

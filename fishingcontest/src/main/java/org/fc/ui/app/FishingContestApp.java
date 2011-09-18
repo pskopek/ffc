@@ -2,6 +2,7 @@ package org.fc.ui.app;
 
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.jface.databinding.swt.SWTObservables;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
@@ -14,6 +15,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
 import org.fc.data.Contest;
+import org.fc.data.ContestDrawException;
 
 public class FishingContestApp {
 	private static Shell shlFishingContest;
@@ -59,6 +61,17 @@ public class FishingContestApp {
 		new Label(shlFishingContest, SWT.NONE);
 		
 		Button btnNewContest = new Button(shlFishingContest, SWT.NONE);
+		btnNewContest.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean confirm = MessageDialog.openConfirm(shlFishingContest,
+						"Potvrď vytvorenie nového preteku",
+						"Nauzaj chcete vytvoriť nový pretek?\nVšetky údaje aktuálneho preteku budú stratené!!!'");
+				if (confirm) {
+					Contest.createNewContest();
+				}
+			}
+		});
 		GridData gd_btnNewContest = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnNewContest.widthHint = 120;
 		btnNewContest.setLayoutData(gd_btnNewContest);
@@ -112,6 +125,31 @@ public class FishingContestApp {
 		btnSaveContest.setText("Zapíš");
 		
 		Button btnDraw = new Button(shlFishingContest, SWT.NONE);
+		btnDraw.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean confirm = MessageDialog.openConfirm(shlFishingContest,
+						"Potvrď nového rozlosovanie",
+						"Naozaj chcete urobiť nové rozlosovanie?\nVšetky údaje o úlohkoch vo všetkých kolách budú stratené!!!'");
+				if (confirm) {
+					try {
+						Contest.getContest().draw();
+						MessageDialog.openInformation(shlFishingContest,
+								"Nové rozlosovanie",
+								"Nové rozlosovanie je aktívne.");
+					}
+					catch (ContestDrawException ce) {
+						ce.printStackTrace();
+						MessageDialog.openError(shlFishingContest,
+								"Chyba pri rozlosovaní",
+								ce.getMessage());
+					}
+					catch (Throwable te) {
+						te.printStackTrace();
+					}
+				}
+			}
+		});
 		GridData gd_btnDraw = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnDraw.widthHint = 122;
 		btnDraw.setLayoutData(gd_btnDraw);
@@ -143,7 +181,7 @@ public class FishingContestApp {
 		btnClose.setText("Koniec");
 		shlFishingContest.setTabList(new Control[]{btnContesters, btnNewContest, btnLoadContest, btnDraw, btnResults, btnClose});
 
-		// createDefaultTestingContent();
+		createDefaultTestingContent();
 		
 		shlFishingContest.open();
 		shlFishingContest.layout();

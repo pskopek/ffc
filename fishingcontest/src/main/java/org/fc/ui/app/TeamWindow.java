@@ -60,6 +60,10 @@ public class TeamWindow extends Shell {
 		tblclmnNewColumn_1.setToolTipText("");
 		tblclmnNewColumn_1.setWidth(100);
 		tblclmnNewColumn_1.setText("Organizácia");
+		
+		TableColumn tblclmnNewColumn_3 = new TableColumn(table, SWT.NONE);
+		tblclmnNewColumn_3.setWidth(100);
+		tblclmnNewColumn_3.setText("Plán");
 		m_teamViever.setContentProvider(new ObservableListContentProvider());
 		
 		teamFrame = new TeamFrame(this, SWT.NONE);
@@ -157,7 +161,7 @@ public class TeamWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("Súťažiaci");
-		setSize(670, 397);
+		setSize(859, 397);
 
 		
 
@@ -166,30 +170,6 @@ public class TeamWindow extends Shell {
 	@Override
 	protected void checkSubclass() {
 		// Disable the check that prevents subclassing of SWT components
-	}
-	protected DataBindingContext initDataBindings() {
-		DataBindingContext bindingContext = new DataBindingContext();
-		//
-		IObservableValue teamVieverObserveSingleSelection_1 = ViewersObservables.observeSingleSelection(m_teamViever);
-		IObservableValue teamVieverNameObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_1, "name", String.class);
-		IObservableValue teamFramegetTxtTextnameObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtTextname(), SWT.Modify);
-		bindingContext.bindValue(teamVieverNameObserveDetailValue, teamFramegetTxtTextnameObserveTextObserveWidget, null, null);
-		//
-		IObservableValue teamVieverObserveSingleSelection = ViewersObservables.observeSingleSelection(m_teamViever);
-		IObservableValue teamVieverOrganisationObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection, "organisation", String.class);
-		IObservableValue teamFramegetTxtTextorganisationObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtTextorganisation(), SWT.Modify);
-		bindingContext.bindValue(teamVieverOrganisationObserveDetailValue, teamFramegetTxtTextorganisationObserveTextObserveWidget, null, null);
-		//
-		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
-		m_teamViever.setContentProvider(listContentProvider);
-		//
-		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"name", "organisation"});
-		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
-		//
-		WritableList writableList = new WritableList(teams, Team.class);
-		m_teamViever.setInput(writableList);
-		//
-		return bindingContext;
 	}
 
 	/**
@@ -200,4 +180,28 @@ public class TeamWindow extends Shell {
 		m_teamViever.refresh();
 	}
 	
+	protected DataBindingContext initDataBindings() {
+		DataBindingContext bindingContext = new DataBindingContext();
+		//
+		IObservableValue teamVieverObserveSingleSelection = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverNameObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection, "name", String.class);
+		IObservableValue teamFramegetTxtTextnameObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtTextname(), SWT.Modify);
+		bindingContext.bindValue(teamVieverNameObserveDetailValue, teamFramegetTxtTextnameObserveTextObserveWidget, null, null);
+		//
+		IObservableValue teamVieverObserveSingleSelection_1 = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverOrganisationObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_1, "organisation", String.class);
+		IObservableValue teamFramegetTxtTextorganisationObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtTextorganisation(), SWT.Modify);
+		bindingContext.bindValue(teamVieverOrganisationObserveDetailValue, teamFramegetTxtTextorganisationObserveTextObserveWidget, null, null);
+		//
+		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
+		m_teamViever.setContentProvider(listContentProvider);
+		//
+		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"name", "organisation", "planAsText"});
+		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
+		//
+		WritableList writableList = new WritableList(teams, Team.class);
+		m_teamViever.setInput(writableList);
+		//
+		return bindingContext;
+	}
 }
