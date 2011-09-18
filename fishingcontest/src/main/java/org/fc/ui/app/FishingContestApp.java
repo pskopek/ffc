@@ -154,7 +154,18 @@ public class FishingContestApp {
 		gd_btnDraw.widthHint = 122;
 		btnDraw.setLayoutData(gd_btnDraw);
 		btnDraw.setText("Rozlosovanie");
-		new Label(shlFishingContest, SWT.NONE);
+		
+		Button btnPrintBoats = new Button(shlFishingContest, SWT.NONE);
+		btnPrintBoats.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				
+			}
+		});
+		GridData gd_btnPrintBoats = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnPrintBoats.widthHint = 100;
+		btnPrintBoats.setLayoutData(gd_btnPrintBoats);
+		btnPrintBoats.setText("Tlač lode");
 		new Label(shlFishingContest, SWT.NONE);
 		
 		Button btnResults = new Button(shlFishingContest, SWT.NONE);

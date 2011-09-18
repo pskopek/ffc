@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Random;
 
-import javax.management.relation.Role;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -18,6 +16,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.XMLEvent;
 
 import org.fc.entity.Catch;
+import org.fc.entity.Gain;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
 
@@ -99,18 +98,24 @@ public class Contest {
 		if (CONTEST == null)
 			return;
 		
-		if (CONTEST.teams != null ) {
-			CONTEST.teams.clear();
-		}
-		
-		if (CONTEST.roundCatch != null) {
-			for (ArrayList<Catch> cl: CONTEST.roundCatch) {
-				cl.clear();
-			}
-			CONTEST.roundCatch.clear();
-		}
+		CONTEST.cleanContest();
 		
 		CONTEST = new Contest();
+	}
+	
+	private void cleanContest() {
+
+		if (teams != null ) {
+			teams.clear();
+		}
+		
+		if (roundCatch != null) {
+			for (ArrayList<Catch> cl: roundCatch) {
+				cl.clear();
+			}
+			roundCatch.clear();
+		}
+		
 	}
 	
 	/**
@@ -173,19 +178,49 @@ public class Contest {
 			xmlw.writeAttribute("id", t.getId().toString());
 			xmlw.writeAttribute("name", t.getName());
 			xmlw.writeAttribute("org", t.getOrganisation());
+		
+			writeRoundPlan(xmlw, t);
+			writeRoundGain(xmlw, t);
+			
 			xmlw.writeEndElement();
 		}
 		
 		xmlw.writeEndElement();
 	}
 	
+	private void writeRoundPlan(XMLStreamWriter xmlw, Team t) throws XMLStreamException {
+		xmlw.writeStartElement("plan");
+		for (Round r: t.getRoundPlan()) {
+			xmlw.writeStartElement("round");
+			xmlw.writeAttribute("round", String.valueOf(r.getRound()));
+			xmlw.writeAttribute("sector", r.getSector() == null ? "null" : r.getSector());
+			xmlw.writeAttribute("role", r.getRole() == null ? "null" : r.getRole());
+			xmlw.writeAttribute("location", String.valueOf(r.getLocation()));
+			xmlw.writeEndElement();
+		}
+		xmlw.writeEndElement();
+	}
+
+	private void writeRoundGain(XMLStreamWriter xmlw, Team t) throws XMLStreamException {
+		xmlw.writeStartElement("gains");
+		for (Gain g: t.getRoundGain()) {
+			xmlw.writeStartElement("gain");
+			xmlw.writeAttribute("fish", String.valueOf(g.fish));
+			xmlw.writeAttribute("cips", String.valueOf(g.CIPS));
+			xmlw.writeEndElement();
+		}
+		xmlw.writeEndElement();
+	}
 	
 	public void loadFromFile(String fileName) throws XMLStreamException, FileNotFoundException {
 		 
+		cleanContest();
+		
 		FileInputStream fileInputStream = new FileInputStream(fileName);
 		XMLStreamReader xmlr = XMLInputFactory.newInstance().createXMLStreamReader(fileInputStream);
 	
 		String path = "";
+		Team lastLoadedTeam = null;
 		while(xmlr.hasNext()) {
 			int event = xmlr.next();
 			if (event == XMLEvent.START_ELEMENT) {
@@ -199,7 +234,13 @@ public class Contest {
 
 			if (event == XMLEvent.START_ELEMENT) {
 				if (path.equals("/contest/teams/team")) {
-					loadTeams(xmlr);
+					lastLoadedTeam = loadTeams(xmlr);
+				}
+				else if (path.equals("/contest/teams/team/plan/round")) {
+					loadPlan(xmlr, lastLoadedTeam);
+				}
+				else if (path.equals("/contest/teams/team/gains/gain")) {
+					loadGains(xmlr, lastLoadedTeam);
 				}
 				else if (path.equals("/contest/dataseq")) {
 					dataSeq = Long.parseLong(xmlr.getElementText());
@@ -219,7 +260,7 @@ public class Contest {
 		
 	}
 	
-	private void loadTeams(XMLStreamReader xmlr) {
+	private Team loadTeams(XMLStreamReader xmlr) {
 		
 		Team t = new Team();
 		
@@ -237,10 +278,64 @@ public class Contest {
 			}
 		}
 		
+		t.getRoundPlan().clear();
+		t.getRoundGain().clear();
 		teams.add(t);
+		
+		return t;
+	}
+
+	private void loadPlan(XMLStreamReader xmlr, Team t) {
+		
+		ArrayList<Round> rp = t.getRoundPlan();
+		if (rp == null)
+			rp = new ArrayList<Round>();
+		
+		Round r = new Round(rp.size() + 1);
+		
+		for (int i = 0; i < xmlr.getAttributeCount(); i++) {
+			String attr = xmlr.getAttributeLocalName(i);
+			String val = xmlr.getAttributeValue(i);
+			if (attr.equals("round")) {
+				r.setRound(Integer.parseInt(val));
+			}
+			else if (attr.equals("localtion")) {
+				r.setLocation(Integer.parseInt(val));
+			}
+			else if (attr.equals("role")) {
+				r.setRole(val.equals("null") ? null : val);
+			}
+			else if (attr.equals("sector")) {
+				r.setSector(val.equals("null") ? null : val);
+			}
+		}
+		
+		rp.add(r);
 		
 	}
 	
+	private void loadGains(XMLStreamReader xmlr, Team t) {
+		
+		ArrayList<Gain> rg = t.getRoundGain();
+		if (rg == null)
+			rg = new ArrayList<Gain>();
+		
+		Gain g = new Gain();
+		
+		for (int i = 0; i < xmlr.getAttributeCount(); i++) {
+			String attr = xmlr.getAttributeLocalName(i);
+			String val = xmlr.getAttributeValue(i);
+			if (attr.equals("cips")) {
+				g.CIPS = Integer.parseInt(val);
+			}
+			else if (attr.equals("fish")) {
+				g.fish = Integer.parseInt(val);
+			}
+		}
+		
+		rg.add(g);
+		
+	}
 	
 	/**
 	 * Draw will delete all catch data and scramble all teams.
