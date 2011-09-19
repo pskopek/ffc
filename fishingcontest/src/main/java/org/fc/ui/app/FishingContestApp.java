@@ -57,7 +57,18 @@ public class FishingContestApp {
 			}
 		});
 		btnContesters.setText("Pretekári");
-		new Label(shlFishingContest, SWT.NONE);
+		
+		Button btnBodovacky = new Button(shlFishingContest, SWT.NONE);
+		btnBodovacky.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Reports.printCatchForms(shlFishingContest);
+			}
+		});
+		GridData gd_btnBodovacky = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnBodovacky.widthHint = 101;
+		btnBodovacky.setLayoutData(gd_btnBodovacky);
+		btnBodovacky.setText("Bodovačky");
 		new Label(shlFishingContest, SWT.NONE);
 		
 		Button btnNewContest = new Button(shlFishingContest, SWT.NONE);
