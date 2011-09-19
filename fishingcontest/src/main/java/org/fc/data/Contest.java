@@ -7,6 +7,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.TreeSet;
 
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -19,6 +22,7 @@ import org.fc.entity.Catch;
 import org.fc.entity.Gain;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
+import org.fc.entity.report.Boats;
 
 /**
  * @author pskopek
@@ -299,7 +303,7 @@ public class Contest {
 			if (attr.equals("round")) {
 				r.setRound(Integer.parseInt(val));
 			}
-			else if (attr.equals("localtion")) {
+			else if (attr.equals("location")) {
 				r.setLocation(Integer.parseInt(val));
 			}
 			else if (attr.equals("role")) {
@@ -593,6 +597,58 @@ public class Contest {
 			throw new ContestDrawException("Neočakávaná chyba počas rozlosovania. Počet súťažiacich je viac ako 64.");
 		}
 		
+	}
+	
+	
+	private Boats findBoat(Iterator<Boats> iter, int round, String sector, int location) {
+
+		Boats b;
+		while (iter.hasNext()) {
+			b = iter.next();
+			if (b.round == round && b.sector.equals(sector) && b.location == location)
+				return b;
+		}
+		
+		return null;
+	}
+	
+	
+	
+	public List<?> reportBoats() {
+		
+		TreeSet<Boats> selection = new TreeSet<Boats>(new BoatsComparator());
+		
+		for (Team t : teams) {
+
+			for (Round r: t.getRoundPlan()) {
+			
+				// we are not putting boys from dam to a boat ;-)
+				if (r.getSector().equals("H")) 
+					continue;
+				
+				Boats b = findBoat(selection.iterator(), r.getRound(), r.getSector(), r.getLocation());
+				if (b == null) {
+					b = new Boats();
+					b.round = r.getRound();
+					b.sector = r.getSector();
+					b.location = r.getLocation();
+					selection.add(b);
+				}
+
+				if (r.getRole().equals("R"))
+					b.referee = t.getName();
+				else if (r.getRole().equals("P"))
+					b.front = t.getName();
+				else if (r.getRole().equals("Z"))
+					b.rear = t.getName();
+
+			}	
+		}
+
+		for (Object o: new ArrayList<Object>(selection))
+			System.out.println(o);
+
+		return new ArrayList<Object>(selection);
 	}
 	
 }

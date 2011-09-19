@@ -159,13 +159,13 @@ public class FishingContestApp {
 		btnPrintBoats.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				
+				Reports.printBoats(shlFishingContest);
 			}
 		});
 		GridData gd_btnPrintBoats = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnPrintBoats.widthHint = 100;
 		btnPrintBoats.setLayoutData(gd_btnPrintBoats);
-		btnPrintBoats.setText("Tlač lode");
+		btnPrintBoats.setText("Tlač lodí");
 		new Label(shlFishingContest, SWT.NONE);
 		
 		Button btnResults = new Button(shlFishingContest, SWT.NONE);

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="boats" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="Boats.round" class="java.lang.Integer"/>
+	<field name="Boats.sector" class="java.lang.String"/>
+	<field name="Boats.location" class="java.lang.Integer"/>
+	<field name="Boats.front" class="java.lang.String"/>
+	<field name="Boats.rear" class="java.lang.String"/>
+	<field name="Boats.referee" class="java.lang.String"/>
+	<group name="round" isStartNewPage="true">
+		<groupExpression><![CDATA[$F{Boats.round}]]></groupExpression>
+		<groupHeader>
+			<band height="1"/>
+		</groupHeader>
+		<groupFooter>
+			<band height="2"/>
+		</groupFooter>
+	</group>
+	<pageHeader>
+		<band height="45">
+			<textField>
+				<reportElement x="15" y="0" width="522" height="36"/>
+				<textElement markup="none">
+					<font size="25" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["Obsadenie lodí v " + ($F{Boats.round} + 1) + ". kole"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="52" y="0" width="45" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Sektor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="105" y="0" width="30" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Lod]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="147" y="1" width="120" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Predný]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="1" width="120" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Zadný]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="14" y="0" width="28" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Kolo]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="402" y="0" width="120" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Rozhodca]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="25" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="147" y="1" width="120" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Boats.front}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="275" y="1" width="120" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Boats.rear}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="52" y="1" width="45" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Boats.sector}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="105" y="1" width="30" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{Boats.location}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="402" y="1" width="120" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Boats.referee}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="15" y="1" width="27" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{Boats.round} + 1]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="30" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>
