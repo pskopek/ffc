@@ -52,6 +52,10 @@ public class TeamWindow extends Shell {
 		table.setHeaderVisible(true);
 		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		
+		TableColumn tblclmnNewColumn_2 = new TableColumn(table, SWT.NONE);
+		tblclmnNewColumn_2.setWidth(35);
+		tblclmnNewColumn_2.setText("Id");
+		
 		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn.setWidth(403);
 		tblclmnNewColumn.setText("Meno");
@@ -179,7 +183,6 @@ public class TeamWindow extends Shell {
 	public void refreshTeamViewerSelection() {
 		m_teamViever.refresh();
 	}
-	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -196,7 +199,7 @@ public class TeamWindow extends Shell {
 		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
 		m_teamViever.setContentProvider(listContentProvider);
 		//
-		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"name", "organisation", "planAsText"});
+		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText"});
 		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
 		//
 		WritableList writableList = new WritableList(teams, Team.class);
