@@ -52,6 +52,7 @@ public class Reports {
 	public static void printCatchForms(Shell parent) {
 		
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
+		reportParameters.put("contestDate", Contest.CONTEST_DATE);
 
 		RoundParameter dPar = new RoundParameter(parent);
 		int res = dPar.open();

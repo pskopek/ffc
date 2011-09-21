@@ -30,6 +30,8 @@ import org.fc.entity.report.Boats;
  */
 public class Contest {
 
+	public static String CONTEST_DATE = "24.09.2011";
+	
 	private int NUM_ROUNDS;
 	
 	private Long dataSeq = 1L;
