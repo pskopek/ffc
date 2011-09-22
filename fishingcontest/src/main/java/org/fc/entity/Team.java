@@ -20,6 +20,7 @@ public class Team {
 	
 	private boolean dummy = false;
 	private boolean disqualified = false;
+	private int fee;
 	
 	// plan of team role in each round
 	private ArrayList<Round> roundPlan;
@@ -145,6 +146,14 @@ public class Team {
 
 	public void setDummy(boolean dummy) {
 		this.dummy = dummy;
+	}
+
+	public int getFee() {
+		return fee;
+	}
+
+	public void setFee(int fee) {
+		this.fee = fee;
 	}
 
 }

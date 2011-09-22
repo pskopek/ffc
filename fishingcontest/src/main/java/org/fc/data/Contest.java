@@ -32,6 +32,9 @@ import org.fc.entity.report.Boats;
 public class Contest {
 
 	public static String CONTEST_DATE = "24.09.2011";
+	public static final String FISH_TYPE = "Pd";
+	public static final String SECTOR = "A";
+	public static final int ROUND = 1;
 	
 	private int NUM_ROUNDS;
 	
@@ -188,6 +191,7 @@ public class Contest {
 			xmlw.writeAttribute("org", t.getOrganisation());
 			xmlw.writeAttribute("dummy", Boolean.toString(t.isDummy()));
 			xmlw.writeAttribute("disq", Boolean.toString(t.isDisqualified()));
+			xmlw.writeAttribute("fee", Integer.toString(t.getFee()));
 		
 			writeRoundPlan(xmlw, t);
 			writeRoundGain(xmlw, t);
@@ -328,7 +332,7 @@ public class Contest {
 		// put catch to proper team
 		Team tc = null;
 		for (Team t: teams) {
-			if (t.getId().equals(c.getId())) {
+			if (t.getId().equals(c.getTeamId())) {
 				tc = t;
 				break;
 			}
@@ -365,6 +369,9 @@ public class Contest {
 			}
 			else if (attr.equals("disq")) {
 				t.setDisqualified(Boolean.parseBoolean(val));
+			}
+			else if (attr.equals("fee")) {
+				t.setFee(Integer.parseInt(val));
 			}
 		}
 		

@@ -125,14 +125,14 @@
   		<scope>system</scope>
   		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar</systemPath>
   	</dependency>
- <!-- 
   	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
+  		<groupId>com.ibm</groupId>
+  		<artifactId>icu</artifactId>
+  		<version>4.4.2</version>
   		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
+  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/com.ibm.icu_4.4.2.v20110208.jar</systemPath>
   	</dependency>
+ <!-- 
   	<dependency>
   		<groupId>org.eclipse.</groupId>
   		<artifactId></artifactId>

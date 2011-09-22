@@ -41,8 +41,8 @@ public class FishingContestApp {
 	
 	public void open() {
 		Display display = Display.getDefault();
-		shlFishingContest = new Shell();
-		shlFishingContest.setSize(357, 221);
+		shlFishingContest = new Shell(SWT.DIALOG_TRIM);
+		shlFishingContest.setSize(359, 221);
 		shlFishingContest.setText("Rybárske preteky");
 		shlFishingContest.setLayout(new GridLayout(3, false));
 		
@@ -180,6 +180,12 @@ public class FishingContestApp {
 		new Label(shlFishingContest, SWT.NONE);
 		
 		Button btnResults = new Button(shlFishingContest, SWT.NONE);
+		btnResults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				new CatchDataEntry(shlFishingContest.getDisplay()).open();
+			}
+		});
 		GridData gd_btnResults = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnResults.widthHint = 121;
 		btnResults.setLayoutData(gd_btnResults);
@@ -216,7 +222,7 @@ public class FishingContestApp {
 
 	private static void createDefaultTestingContent() {
 		Contest c = Contest.getContest();
-		c.createTestData();
+		//c.createTestData();
 	}
 
 	public Shell getShlFishingContest() {

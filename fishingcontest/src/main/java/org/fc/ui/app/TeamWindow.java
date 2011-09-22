@@ -72,6 +72,10 @@ public class TeamWindow extends Shell {
 		TableColumn tblclmnNewColumn_4 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_4.setWidth(100);
 		tblclmnNewColumn_4.setText("Dis");
+		
+		TableColumn tblclmnNewColumn_5 = new TableColumn(table, SWT.NONE);
+		tblclmnNewColumn_5.setWidth(70);
+		tblclmnNewColumn_5.setText("Zapl.");
 		m_teamViever.setContentProvider(new ObservableListContentProvider());
 		
 		teamFrame = new TeamFrame(this, SWT.NONE);
@@ -201,7 +205,7 @@ public class TeamWindow extends Shell {
 		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
 		m_teamViever.setContentProvider(listContentProvider);
 		//
-		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText", "disqualified"});
+		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText", "disqualified", "fee"});
 		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
 		//
 		WritableList writableList = new WritableList(teams, Team.class);
@@ -216,6 +220,11 @@ public class TeamWindow extends Shell {
 		IObservableValue teamVieverDisqualifiedObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_3, "disqualified", boolean.class);
 		IObservableValue teamFramegetBtnDisqualifiedObserveSelectionObserveWidget = SWTObservables.observeSelection(teamFrame.getBtnDisqualified());
 		bindingContext.bindValue(teamVieverDisqualifiedObserveDetailValue, teamFramegetBtnDisqualifiedObserveSelectionObserveWidget, null, null);
+		//
+		IObservableValue teamVieverObserveSingleSelection_4 = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverFeeObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_4, "fee", int.class);
+		IObservableValue teamFramegetTxtFeeObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtFee(), SWT.Modify);
+		bindingContext.bindValue(teamVieverFeeObserveDetailValue, teamFramegetTxtFeeObserveTextObserveWidget, null, null);
 		//
 		return bindingContext;
 	}

@@ -17,6 +17,8 @@ public class TeamFrame extends Composite {
 	private Text txtTextorganisation;
 	private Button btnDisqualified;
 	private Button btnDummy;
+	private Label lblNewLabel;
+	private Text txtFee;
 
 	/**
 	 * Create the composite.
@@ -58,6 +60,18 @@ public class TeamFrame extends Composite {
 			}
 		});
 		txtTextorganisation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		
+		lblNewLabel = new Label(this, SWT.NONE);
+		lblNewLabel.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
+		lblNewLabel.setText("Zaplatené");
+		
+		txtFee = new Text(this, SWT.BORDER);
+		txtFee.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				((TeamWindow)getParent()).refreshTeamViewerSelection();
+			}
+		});
+		txtFee.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		new Label(this, SWT.NONE);
 		
 		Composite composite = new Composite(this, SWT.NONE);
@@ -103,5 +117,8 @@ public class TeamFrame extends Composite {
 	}
 	public Button getBtnDummy() {
 		return btnDummy;
+	}
+	public Text getTxtFee() {
+		return txtFee;
 	}
 }

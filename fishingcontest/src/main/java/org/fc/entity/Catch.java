@@ -35,8 +35,10 @@ public class Catch {
 	public void calcCIPS() {
 		
 		int cmUp = length / 10 + (length % 10 == 0 ? 0 : 1);
-		
-		cips = 100 + cmUp * 20;
+		if (length != 0)
+			cips = 100 + cmUp * 20;
+		else
+			cips = 0;
 	}
 	
 	public Long getId() {
@@ -89,6 +91,7 @@ public class Catch {
 
 	public void setLength(int length) {
 		this.length = length;
+		calcCIPS();
 	}
 
 	public int getCips() {
