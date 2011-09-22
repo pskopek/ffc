@@ -766,8 +766,10 @@ public class Contest {
 		
 		// calculation itself starts here
 		for (Team t: teams) {
+			boolean teamCaughtInRound = false;
 			for (Catch c: t.getCatched()) {
 				if (c.getRound() == round) {
+					teamCaughtInRound = true;
 					Result tr = findTeamResult(round, c.getTeamId().longValue());
 					if (tr != null) {
 						tr.setAmount(tr.getAmount() + 1);
@@ -791,45 +793,28 @@ public class Contest {
 					
 				}
 			}
+			if (! teamCaughtInRound) {
+				String sector = t.getPlannedSector(round - 1);
+				String role = t.getPlannedRole(round - 1);
+				
+				if (role == null || !role.equals("R")) {
+					Result tr = new Result();
+					tr.setRound(round);
+					tr.setSector(sector);
+					tr.setTeamId(t.getId());
+					tr.setName(t.getName());
+					tr.setOrganisation(t.getOrganisation());
+					tr.setCips(0);
+					tr.setAmount(0);
+					tr.setMax(0);
+					results.add(tr);
+				}
+			}
 		}
 		
-		Comparator<Result> roundResultsComparator = new Comparator<Result>() {
-
-			public int compare(Result o1, Result o2) {
-
-				if (o1.getRound() < o2.getRound()) { 
-					return -1;
-				}	
-				else if (o1.getRound() > o2.getRound()) { 
-					return 1;
-				}
-				else if (o1.getSector().compareTo(o2.getSector()) < 0) {
-					return -1;
-				}
-				else if (o1.getSector().compareTo(o2.getSector()) > 0) {
-					
-				}
-				if (o1.getCips() < o2.getCips()) { 
-					return -1;
-				}	
-				else if (o1.getCips() > o2.getCips()) { 
-					return 1;
-				}
-				if (o1.getMax() < o2.getMax()) { 
-					return -1;
-				}	
-				else if (o1.getMax() > o2.getMax()) { 
-					return 1;
-				}
-				
-				return 0;
-			}
-			
-		};
-
 
 		// it is universal, so we can sort all results (including other rounds if they are there) 
-		Collections.sort(results, roundResultsComparator);
+		Collections.sort(results, new RoundResultsComparator());
 
 		// final order number assignments
 		for (String sector: new String[] {"A", "B", "H"}) {

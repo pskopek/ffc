@@ -76,6 +76,16 @@ public class Team {
 		return "[" + id + ":" + getName() + " - " + getOrganisation() + ":" + sbRounds + "]";
 	}
 
+	public String getPlannedSector(int round) {
+		
+		Round r = roundPlan.get(round);
+		return r.getSector();
+	}
+
+	public String getPlannedRole(int round) {
+		Round r = roundPlan.get(round);
+		return r.getRole();
+	}
 	public void setId(Long id) {
 		this.id = id;
 	}
