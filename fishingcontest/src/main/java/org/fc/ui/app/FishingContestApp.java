@@ -16,6 +16,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
 import org.fc.data.Contest;
 import org.fc.data.ContestDrawException;
+import org.fc.data.ResultViever;
 
 public class FishingContestApp {
 	private static Shell shlFishingContest;
@@ -42,7 +43,7 @@ public class FishingContestApp {
 	public void open() {
 		Display display = Display.getDefault();
 		shlFishingContest = new Shell(SWT.DIALOG_TRIM);
-		shlFishingContest.setSize(359, 221);
+		shlFishingContest.setSize(403, 221);
 		shlFishingContest.setText("Rybárske preteky");
 		shlFishingContest.setLayout(new GridLayout(3, false));
 		
@@ -133,7 +134,7 @@ public class FishingContestApp {
 				}
 			}
 		});
-		btnSaveContest.setText("Zapíš");
+		btnSaveContest.setText("Zapíš ...");
 		
 		Button btnDraw = new Button(shlFishingContest, SWT.NONE);
 		btnDraw.addSelectionListener(new SelectionAdapter() {
@@ -190,8 +191,31 @@ public class FishingContestApp {
 		gd_btnResults.widthHint = 121;
 		btnResults.setLayoutData(gd_btnResults);
 		btnResults.setText("Výsledky");
-		new Label(shlFishingContest, SWT.NONE);
-		new Label(shlFishingContest, SWT.NONE);
+		
+		Button btnRoundResults = new Button(shlFishingContest, SWT.NONE);
+		btnRoundResults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				RoundParameter dPar = new RoundParameter(FishingContestApp.shlFishingContest);
+				int round = dPar.open() + 1;
+				
+				if (round <= 0) {
+					return;
+				}
+				
+				Contest.getContest().roundResultsCalculation(round);
+				
+				new ResultViever(
+						FishingContestApp.shlFishingContest.getDisplay(),
+						Contest.getContest().getResults()).open();
+				
+
+			}
+		});
+		btnRoundResults.setText("Výsledky/kolo");
+		
+		Button btnFinalResults = new Button(shlFishingContest, SWT.NONE);
+		btnFinalResults.setText("Záverečné výsledky");
 		new Label(shlFishingContest, SWT.NONE);
 		new Label(shlFishingContest, SWT.NONE);
 		

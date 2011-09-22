@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -21,6 +23,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import org.fc.entity.Catch;
 import org.fc.entity.Gain;
+import org.fc.entity.Result;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
 import org.fc.entity.report.Boats;
@@ -43,6 +46,8 @@ public class Contest {
 	private ArrayList<Team> teams = new ArrayList<Team>();
 	
 	private ArrayList<ArrayList<Catch>> roundCatch;
+	
+	private ArrayList<Result> results = new ArrayList<Result>();
 	
 	private static Contest CONTEST = null;
 	
@@ -743,5 +748,142 @@ public class Contest {
 
 		return new ArrayList<Object>(selection);
 	}
+	
+	
+	public void roundResultsCalculation(int round) {
+		
+		// first delete the old round result data
+		if (results != null) {
+			for (Result result: results) {
+				if (result.getRound() == round) {
+					results.remove(result);
+				}
+			}
+		}
+		else {
+			results = new ArrayList<Result>();
+		}
+		
+		// calculation itself starts here
+		for (Team t: teams) {
+			for (Catch c: t.getCatched()) {
+				if (c.getRound() == round) {
+					Result tr = findTeamResult(round, c.getTeamId().longValue());
+					if (tr != null) {
+						tr.setAmount(tr.getAmount() + 1);
+						tr.setCips(tr.getCips() + c.getCips());
+						if (tr.getMax() < c.getLength()) {
+							tr.setMax(c.getLength());
+						}
+					}
+					else {
+						tr = new Result();
+						tr.setRound(round);
+						tr.setSector(c.getSector());
+						tr.setTeamId(c.getTeamId());
+						tr.setName(t.getName());
+						tr.setOrganisation(t.getOrganisation());
+						tr.setCips(c.getCips());
+						tr.setAmount(1);
+						tr.setMax(c.getLength());
+						results.add(tr);
+					}
+					
+				}
+			}
+		}
+		
+		Comparator<Result> roundResultsComparator = new Comparator<Result>() {
+
+			public int compare(Result o1, Result o2) {
+
+				if (o1.getRound() < o2.getRound()) { 
+					return -1;
+				}	
+				else if (o1.getRound() > o2.getRound()) { 
+					return 1;
+				}
+				else if (o1.getSector().compareTo(o2.getSector()) < 0) {
+					return -1;
+				}
+				else if (o1.getSector().compareTo(o2.getSector()) > 0) {
+					
+				}
+				if (o1.getCips() < o2.getCips()) { 
+					return -1;
+				}	
+				else if (o1.getCips() > o2.getCips()) { 
+					return 1;
+				}
+				if (o1.getMax() < o2.getMax()) { 
+					return -1;
+				}	
+				else if (o1.getMax() > o2.getMax()) { 
+					return 1;
+				}
+				
+				return 0;
+			}
+			
+		};
+
+
+		// it is universal, so we can sort all results (including other rounds if they are there) 
+		Collections.sort(results, roundResultsComparator);
+
+		// final order number assignments
+		for (String sector: new String[] {"A", "B", "H"}) {
+
+			int order = 1;
+
+			for (int i = 0; i < results.size(); i++) {
+				Result res = results.get(i);
+				if (res.getRound() == round && res.getSector().equals(sector)) {
+					res.setOrder(order);
+					
+					if (res.getAmount() > 0) {
+						res.setOrderPoints(order);
+					}
+					else {
+						res.setOrderPoints(teams.size() / NUM_ROUNDS);
+					}
+					order++;
+				}
+			}
+		}
+		
+		
+	}
+	
+	public Result findTeamResult(int round, long teamId) {
+		
+		Result res = null;
+		for (Result r: results) {
+			if (r.getRound() == round && r.getTeamId() == teamId) {
+				res = r;
+				break;
+			}
+		}
+		
+		return res;
+	}
+	
+	public Team findTeamById(long id) {
+		Team res = null;
+		for (Team t: teams) {
+			if (t.getId().longValue() == id) {
+				res = t;
+				break;
+			}
+		}
+			
+		return res;
+	}
+
+
+	public ArrayList<Result> getResults() {
+		return results;
+	}
+	
 	
 }
