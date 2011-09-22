@@ -8,10 +8,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class TeamFrame extends Composite {
 	private Text txtTextname;
 	private Text txtTextorganisation;
+	private Button btnDisqualified;
+	private Button btnDummy;
 
 	/**
 	 * Create the composite.
@@ -53,6 +58,29 @@ public class TeamFrame extends Composite {
 			}
 		});
 		txtTextorganisation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		new Label(this, SWT.NONE);
+		
+		Composite composite = new Composite(this, SWT.NONE);
+		composite.setLayout(new GridLayout(2, false));
+		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_composite.heightHint = 32;
+		composite.setLayoutData(gd_composite);
+		
+		btnDisqualified = new Button(composite, SWT.CHECK);
+		btnDisqualified.addSelectionListener(new SelectionAdapter() {
+		});
+		GridData gd_btnDisqualified = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnDisqualified.widthHint = 151;
+		btnDisqualified.setLayoutData(gd_btnDisqualified);
+		btnDisqualified.setText("Diskvalifikovaný");
+		
+		btnDummy = new Button(composite, SWT.CHECK);
+		btnDummy.addSelectionListener(new SelectionAdapter() {
+		});
+		GridData gd_btnDummy = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_btnDummy.widthHint = 123;
+		btnDummy.setLayoutData(gd_btnDummy);
+		btnDummy.setText("Doplnený");
 
 	}
 
@@ -66,5 +94,14 @@ public class TeamFrame extends Composite {
 	}
 	public Text getTxtTextorganisation() {
 		return txtTextorganisation;
+	}
+	
+	
+	
+	public Button getBtnDisqualified() {
+		return btnDisqualified;
+	}
+	public Button getBtnDummy() {
+		return btnDummy;
 	}
 }

@@ -11,24 +11,21 @@ public class Catch {
 	
 	private Long id;
 	
-	private Team team;
+	private Long teamId;
 	private int round;
 	private String sector;
+	
+	private String fishType;
+	private int fish;
+	private int length;
+	private int cips;
 
 	public Long getId() {
 		return id;
 	}
 
-	private void setId(Long id) {
+	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Team getTeam() {
-		return team;
-	}
-
-	public void setTeam(Team team) {
-		this.team = team;
 	}
 
 	public int getRound() {
@@ -48,7 +45,47 @@ public class Catch {
 	}
 	
 	public String toString() {
-		return "[" + id + ": R=" + getRound() + ", S=" + getSector() + "]";
+		return "[" + id + ": R=" + getRound() + ", S=" + getSector() + "-" + fish + "," + length + "," + cips + "]";
+	}
+
+	public Long getTeamId() {
+		return teamId;
+	}
+
+	public void setTeamId(Long teamId) {
+		this.teamId = teamId;
+	}
+
+	public String getFishType() {
+		return fishType;
+	}
+
+	public void setFishType(String fishType) {
+		this.fishType = fishType;
+	}
+
+	public int getFish() {
+		return fish;
+	}
+
+	public void setFish(int fish) {
+		this.fish = fish;
+	}
+
+	public int getLength() {
+		return length;
+	}
+
+	public void setLength(int length) {
+		this.length = length;
+	}
+
+	public int getCips() {
+		return cips;
+	}
+
+	public void setCips(int cips) {
+		this.cips = cips;
 	}
 
 }

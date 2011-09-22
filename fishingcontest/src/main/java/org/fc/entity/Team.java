@@ -18,10 +18,15 @@ public class Team {
 	private String name;
 	private String organisation;
 	
+	private boolean dummy = false;
+	private boolean disqualified = false;
+	
 	// plan of team role in each round
 	private ArrayList<Round> roundPlan;
 	// team CIPS gain in each round
 	private ArrayList<Gain> roundGain;
+	
+	private ArrayList<Catch> catched;
 	
 	public Team() {
 		id = Contest.getContest().getNextDataSeq();
@@ -31,6 +36,8 @@ public class Team {
 			roundPlan.add(new Round(i));
 			roundGain.add(new Gain());
 		}
+		
+		catched = new ArrayList<Catch>(20);
 	}
 	
 	public Team(Long id) {
@@ -114,6 +121,30 @@ public class Team {
 			return "";
 		else
 			return ret;
+	}
+
+	public ArrayList<Catch> getCatched() {
+		return catched;
+	}
+
+	public boolean isDisqualified() {
+		return disqualified;
+	}
+
+	public void setDisqualified(boolean disqualified) {
+		this.disqualified = disqualified;
+	}
+
+	public void setCatched(ArrayList<Catch> catched) {
+		this.catched = catched;
+	}
+
+	public boolean isDummy() {
+		return dummy;
+	}
+
+	public void setDummy(boolean dummy) {
+		this.dummy = dummy;
 	}
 
 }

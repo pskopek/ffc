@@ -57,17 +57,21 @@ public class TeamWindow extends Shell {
 		tblclmnNewColumn_2.setText("Id");
 		
 		TableColumn tblclmnNewColumn = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn.setWidth(403);
+		tblclmnNewColumn.setWidth(340);
 		tblclmnNewColumn.setText("Meno");
 		
 		TableColumn tblclmnNewColumn_1 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_1.setToolTipText("");
-		tblclmnNewColumn_1.setWidth(100);
+		tblclmnNewColumn_1.setWidth(301);
 		tblclmnNewColumn_1.setText("Organizácia");
 		
 		TableColumn tblclmnNewColumn_3 = new TableColumn(table, SWT.NONE);
-		tblclmnNewColumn_3.setWidth(100);
+		tblclmnNewColumn_3.setWidth(240);
 		tblclmnNewColumn_3.setText("Plán");
+		
+		TableColumn tblclmnNewColumn_4 = new TableColumn(table, SWT.NONE);
+		tblclmnNewColumn_4.setWidth(100);
+		tblclmnNewColumn_4.setText("Dis");
 		m_teamViever.setContentProvider(new ObservableListContentProvider());
 		
 		teamFrame = new TeamFrame(this, SWT.NONE);
@@ -137,8 +141,6 @@ public class TeamWindow extends Shell {
 		btnPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				// TODO: remove later
-				Contest.getContest().getTeams().get(0).setName("GGG" + System.currentTimeMillis());
 			}
 		});
 		btnPrint.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -165,7 +167,7 @@ public class TeamWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("Súťažiaci");
-		setSize(859, 397);
+		setSize(1100, 700);
 
 		
 
@@ -199,11 +201,21 @@ public class TeamWindow extends Shell {
 		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
 		m_teamViever.setContentProvider(listContentProvider);
 		//
-		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText"});
+		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText", "disqualified"});
 		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
 		//
 		WritableList writableList = new WritableList(teams, Team.class);
 		m_teamViever.setInput(writableList);
+		//
+		IObservableValue teamVieverObserveSingleSelection_2 = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverDummyObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_2, "dummy", boolean.class);
+		IObservableValue teamFramegetBtnDummyObserveSelectionObserveWidget = SWTObservables.observeSelection(teamFrame.getBtnDummy());
+		bindingContext.bindValue(teamVieverDummyObserveDetailValue, teamFramegetBtnDummyObserveSelectionObserveWidget, null, null);
+		//
+		IObservableValue teamVieverObserveSingleSelection_3 = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverDisqualifiedObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_3, "disqualified", boolean.class);
+		IObservableValue teamFramegetBtnDisqualifiedObserveSelectionObserveWidget = SWTObservables.observeSelection(teamFrame.getBtnDisqualified());
+		bindingContext.bindValue(teamVieverDisqualifiedObserveDetailValue, teamFramegetBtnDisqualifiedObserveSelectionObserveWidget, null, null);
 		//
 		return bindingContext;
 	}

@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -155,6 +156,7 @@ public class Contest {
 		
 		writeTeams(xmlw);
 		
+		writeCatched(xmlw);
 		
 		
 		xmlw.writeEndElement();
@@ -184,15 +186,38 @@ public class Contest {
 			xmlw.writeAttribute("id", t.getId().toString());
 			xmlw.writeAttribute("name", t.getName());
 			xmlw.writeAttribute("org", t.getOrganisation());
+			xmlw.writeAttribute("dummy", Boolean.toString(t.isDummy()));
+			xmlw.writeAttribute("disq", Boolean.toString(t.isDisqualified()));
 		
 			writeRoundPlan(xmlw, t);
 			writeRoundGain(xmlw, t);
-			
 			xmlw.writeEndElement();
 		}
 		
 		xmlw.writeEndElement();
 	}
+	
+	private void writeCatched(XMLStreamWriter xmlw) throws XMLStreamException {
+		
+		xmlw.writeStartElement("catched");
+		for (Team t: teams) {
+			if (t.getCatched() == null) continue;
+			for (Catch c: t.getCatched()) {
+				xmlw.writeStartElement("catch");
+				xmlw.writeAttribute("id", String.valueOf(c.getId()));
+				xmlw.writeAttribute("teamid", String.valueOf(c.getTeamId()));
+				xmlw.writeAttribute("round", String.valueOf(c.getRound()));
+				xmlw.writeAttribute("sector", c.getSector());
+				xmlw.writeAttribute("fishType", c.getFishType());
+				xmlw.writeAttribute("fish", String.valueOf(c.getFish()));
+				xmlw.writeAttribute("length", String.valueOf(c.getLength()));
+				xmlw.writeAttribute("cips", String.valueOf(c.getCips()));
+				xmlw.writeEndElement();
+			}
+		}
+		xmlw.writeEndElement();
+	}
+
 	
 	private void writeRoundPlan(XMLStreamWriter xmlw, Team t) throws XMLStreamException {
 		xmlw.writeStartElement("plan");
@@ -258,12 +283,69 @@ public class Contest {
 					path = path.substring(0, path.lastIndexOf("/"));
 					System.out.println("NUM_ROUNDS=" + NUM_ROUNDS);
 				}
+				else if (path.equals("/contest/catched/catch")) {
+					loadCatch(xmlr);
+				}
 			
 			}
 		}
 		
 		xmlr.close();
 		
+	}
+	
+	
+	private void loadCatch(XMLStreamReader xmlr) {
+
+		Catch c = new Catch();
+		
+		for (int i = 0; i < xmlr.getAttributeCount(); i++) {
+			String attr = xmlr.getAttributeLocalName(i);
+			String val = xmlr.getAttributeValue(i);
+			if (attr.equals("id")) {
+				c.setId(Long.parseLong(val));
+			}
+			else if (attr.equals("teamid")) {
+				c.setTeamId(Long.parseLong(val));
+			}
+			else if (attr.equals("fish")) {
+				c.setFish(Integer.parseInt(val));
+			}
+			else if (attr.equals("fishType")) {
+				c.setFishType(val);
+			}
+			else if (attr.equals("round")) {
+				c.setRound(Integer.parseInt(val));
+			}
+			else if (attr.equals("sector")) {
+				c.setSector(val);
+			}
+			else if (attr.equals("length")) {
+				c.setLength(Integer.parseInt(val));
+			}
+			else if (attr.equals("cips")) {
+				c.setCips(Integer.parseInt(val));
+			}
+		}
+		
+		
+		// put catch to proper team
+		Team tc = null;
+		for (Team t: teams) {
+			if (t.getId().equals(c.getId())) {
+				tc = t;
+				break;
+			}
+		}
+		
+		if (tc != null) {
+			tc.getCatched().add(c);
+		}
+		else {
+			RuntimeException e = new RuntimeException("Ulovok " + c + " sa neda zaradit do teamu.");
+			throw e;
+		}
+			
 	}
 	
 	private Team loadTeams(XMLStreamReader xmlr) {
@@ -281,6 +363,12 @@ public class Contest {
 			}
 			else if (attr.equals("org")) {
 				t.setOrganisation(val);
+			}
+			else if (attr.equals("dummy")) {
+				t.setDummy(Boolean.parseBoolean(val));
+			}
+			else if (attr.equals("disq")) {
+				t.setDisqualified(Boolean.parseBoolean(val));
 			}
 		}
 		
