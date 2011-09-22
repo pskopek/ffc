@@ -56,7 +56,7 @@ public class FishingContestApp {
 				new TeamWindow(shlFishingContest.getDisplay()).open();
 			}
 		});
-		btnContesters.setText("Pretekári");
+		btnContesters.setText("Súťažiaci");
 		
 		Button btnBodovacky = new Button(shlFishingContest, SWT.NONE);
 		btnBodovacky.addSelectionListener(new SelectionAdapter() {
