@@ -209,7 +209,6 @@ public class Contest {
 				xmlw.writeAttribute("round", String.valueOf(c.getRound()));
 				xmlw.writeAttribute("sector", c.getSector());
 				xmlw.writeAttribute("fishType", c.getFishType());
-				xmlw.writeAttribute("fish", String.valueOf(c.getFish()));
 				xmlw.writeAttribute("length", String.valueOf(c.getLength()));
 				xmlw.writeAttribute("cips", String.valueOf(c.getCips()));
 				xmlw.writeEndElement();
@@ -307,9 +306,6 @@ public class Contest {
 			}
 			else if (attr.equals("teamid")) {
 				c.setTeamId(Long.parseLong(val));
-			}
-			else if (attr.equals("fish")) {
-				c.setFish(Integer.parseInt(val));
 			}
 			else if (attr.equals("fishType")) {
 				c.setFishType(val);
