@@ -463,15 +463,48 @@ public class Contest {
 	
 	private void singleDraw() throws ContestDrawException {
 		
+		ArrayList<Team> realTeams = new ArrayList<Team>();
+		ArrayList<Team> dummyTeams = new ArrayList<Team>();
+		
 		for (Team t: teams) {
 			t.reset();
+			if (t.isDummy()) {
+				dummyTeams.add(t);
+			}
+			else {
+				realTeams.add(t);
+			}
 		}
 		
 		
-		Team[] perm = generatePermutation(this.teams, 3123, 5000);
+		//Team[] perm = generatePermutation(realTeams, 3123, 5000);
 		
-		checkRules(perm);
-		setNewPermutationAsTeams(perm);
+		Collections.shuffle(realTeams, new Random(System.currentTimeMillis()));
+		
+		realTeams.addAll(dummyTeams);
+		
+		if (realTeams.size() != teams.size()) {
+			throw new ContestDrawException("realTeams.size() != teams.size()");
+		}
+		
+		// merge dummies
+		int numDummies = dummyTeams.size();
+		if (numDummies > 0) {
+			for (int i = 0; i < numDummies / 2; i++) {
+				int dummy = realTeams.size() - numDummies + i;
+				int real = realTeams.size() - realTeams.size() / (NUM_ROUNDS * 2) - 1 - i; 
+				
+				System.out.println("swapping " +  dummy + " <-> " + real);
+				System.out.println("swapping " +  realTeams.get(dummy) + " <-> " + realTeams.get(real));
+				
+				Collections.swap(realTeams, dummy, real);
+				
+			}
+		}
+		
+		
+		//checkRules(perm);
+		setNewPermutationAsTeams(realTeams.toArray(new Team[realTeams.size()]));
 
 		
 		
