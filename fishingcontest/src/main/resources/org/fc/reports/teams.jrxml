@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="teams" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="contestDate" class="java.lang.String"/>
+	<field name="Team.id" class="java.lang.Long"/>
+	<field name="Team.name" class="java.lang.String"/>
+	<field name="Team.organisation" class="java.lang.String"/>
+	<title>
+		<band height="32" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="390" height="24"/>
+				<textElement markup="none">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["YACHTER CUP 2011 - súťažiaci"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="416" y="4" width="67" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{contestDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="24" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Por.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="34" y="0" width="139" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Meno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="183" y="0" width="142" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Organizácia]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="19" width="348" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="24" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{Team.id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="34" y="0" width="139" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="183" y="0" width="142" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.name}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

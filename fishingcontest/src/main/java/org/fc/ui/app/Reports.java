@@ -26,6 +26,28 @@ import yaf.reporting.ui.PrintDialog;
  */
 public class Reports {
 	
+	public static void printTeams(Shell parent) {
+		Map<String, Object> reportParameters = new HashMap<String, Object>();
+		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+
+		ReportDescriptor rd = new ReportDescriptor("Tlač pretekárov",
+				"teams.jasper", //$NON-NLS-1$
+				ReportLoaderObject.getLoader(), reportParameters) {
+
+			@Override
+			public List<?> invoke() throws Throwable {
+				return Contest.getContest().getTeams();
+			}
+
+		};
+		
+		PrintDialog dialog = new PrintDialog(parent,
+				"Tlač pretekárov", 
+				rd);
+		dialog.open();		
+		
+	}
+
 	public static void printFinalResults(Shell parent) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
@@ -49,7 +71,6 @@ public class Reports {
 		dialog.open();		
 		
 	}
-
 	
 	public static void printPartialResults(Shell parent, final int round) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();

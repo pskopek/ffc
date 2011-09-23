@@ -145,6 +145,7 @@ public class TeamWindow extends Shell {
 		btnPrint.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				Reports.printTeams(TeamWindow.this.getShell());
 			}
 		});
 		btnPrint.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
