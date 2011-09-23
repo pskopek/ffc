@@ -15,5 +15,6 @@ public class CatchForm {
 	public String round;
 	public String sector;
 	public String referee;
+	public String location;
 
 }

@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 import org.fc.data.Contest;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
+import org.fc.entity.report.Boats;
 import org.fc.entity.report.CatchForm;
 import org.fc.reports.ReportLoaderObject;
 
@@ -70,6 +70,8 @@ public class Reports {
 			@Override
 			public List<?> invoke() throws Throwable {
 
+				List<?> boats = Contest.getContest().reportBoats();
+
 				List<Object> forms = new ArrayList<Object>();
 				
 				for (Team t: Contest.getContest().getTeams()) {
@@ -83,6 +85,30 @@ public class Reports {
 						cf.round = String.valueOf(round + 1);
 						cf.sector = t.getRoundPlan().get(round).getSector();
 						cf.referee = Reports.findReferee(t, round);
+						if (cf.sector.equals("H")) {
+							cf.location = Integer.toString(t.getRoundPlan().get(round).getLocation()); 
+						}
+						else {
+							Boats b = null;
+							for (Object o: boats) {
+								b = (Boats)o;
+								if (b.round == round
+										&& b.sector.equals(cf.sector) 
+										&& b.location == t.getRoundPlan().get(round).getLocation())
+									break;
+							}
+							
+							if (b != null) {
+								cf.location = "Loď:" + b.sector + b.location 
+										+ " - Predný:" + b.front 
+										+ " - Zadný:" + b.rear + "\n" 
+										+ " - Rozhodca:" + b.referee; 
+							}
+							else {
+								cf.location = "null"; 
+							}
+						}
+						
 						forms.add(cf);
 					}
 					
@@ -124,4 +150,10 @@ public class Reports {
 		return null;
 	}
 	
+	public static String findBoatCrew(Team t, int round) {
+
+		
+		
+		return null;
+	}
 }

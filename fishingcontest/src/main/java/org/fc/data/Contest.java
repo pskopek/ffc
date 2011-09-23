@@ -7,9 +7,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
@@ -742,9 +740,6 @@ public class Contest {
 
 			}	
 		}
-
-		for (Object o: new ArrayList<Object>(selection))
-			System.out.println(o);
 
 		return new ArrayList<Object>(selection);
 	}
