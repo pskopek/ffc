@@ -203,7 +203,7 @@ public class FishingContestApp {
 					return;
 				}
 				
-				Contest.getContest().roundResultsCalculation(round);
+				Contest.getContest().roundResultsCalculation(round, true);
 				
 				new ResultViever(
 						FishingContestApp.shlFishingContest.getDisplay(),

@@ -775,20 +775,18 @@ public class Contest {
 	}
 	
 	
-	public void roundResultsCalculation(int round) {
+	public void roundResultsCalculation(int round, boolean cleanResults) {
 		
 		// first delete the old round result data
-		if (results != null) {
-			for (Result result: results) {
-				if (result.getRound() == round) {
-					results.remove(result);
-				}
+		if (cleanResults) {
+			if (results != null) {
+				results.clear();
+			}
+			else {
+				results = new ArrayList<Result>();
 			}
 		}
-		else {
-			results = new ArrayList<Result>();
-		}
-		
+
 		// calculation itself starts here
 		for (Team t: teams) {
 			boolean teamCaughtInRound = false;

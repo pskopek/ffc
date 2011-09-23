@@ -5,36 +5,45 @@ import java.util.ArrayList;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.widgets.TableColumn;
 import org.fc.entity.Result;
+import org.fc.ui.app.Reports;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
 import org.eclipse.core.databinding.beans.PojoObservables;
 import org.eclipse.jface.databinding.viewers.ObservableMapLabelProvider;
 import org.eclipse.core.databinding.observable.list.WritableList;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 
 public class ResultViever extends Shell {
 	private DataBindingContext m_bindingContext;
 	private Table table;
 	private TableViewer tableViewer;
 	private ArrayList<Result> resultsToView;
+	private int round;
 
 	/**
 	 * Create the shell.
 	 * @param display
 	 */
 	public ResultViever(Display display, ArrayList<Result> resultsToView) {
-		super(display, SWT.SHELL_TRIM);
-		setLayout(new FillLayout(SWT.HORIZONTAL));
+		super(display, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
 		
 		this.resultsToView = resultsToView;
 		
+		setLayout(new GridLayout(1, false));
+		
 		tableViewer = new TableViewer(this, SWT.BORDER | SWT.FULL_SELECTION);
 		table = tableViewer.getTable();
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
 		
@@ -73,6 +82,31 @@ public class ResultViever extends Shell {
 		TableColumn tblclmnNewColumn_8 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_8.setWidth(100);
 		tblclmnNewColumn_8.setText("Body um.");
+		
+		Composite composite = new Composite(this, SWT.NONE);
+		composite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+		composite.setLayout(null);
+		
+		Button btnPrint = new Button(composite, SWT.NONE);
+		btnPrint.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Reports.printPartialResults(ResultViever.this.getShell(), round);
+			}
+		});
+		btnPrint.setBounds(225, 0, 96, 27);
+		btnPrint.setToolTipText("");
+		btnPrint.setText("Tlač");
+		
+		Button btnClose = new Button(composite, SWT.NONE);
+		btnClose.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ResultViever.this.getShell().close();
+			}
+		});
+		btnClose.setBounds(335, 0, 96, 27);
+		btnClose.setText("Zatvor");
 		createContents();
 		m_bindingContext = initDataBindings();
 	}
@@ -81,9 +115,14 @@ public class ResultViever extends Shell {
 	 * Create contents of the shell.
 	 */
 	protected void createContents() {
-		setText("SWT Application");
-		setSize(832, 431);
 
+		if (resultsToView != null && resultsToView.size() > 0) {
+			round = resultsToView.get(0).getRound();
+		}
+		
+		
+		setText("Výsledky po " + round + ". kole" );
+		setSize(832, 431);
 	}
 
 	@Override

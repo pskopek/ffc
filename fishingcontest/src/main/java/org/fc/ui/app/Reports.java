@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Shell;
 import org.fc.data.Contest;
+import org.fc.entity.Result;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
 import org.fc.entity.report.Boats;
@@ -24,6 +25,35 @@ import yaf.reporting.ui.PrintDialog;
  *
  */
 public class Reports {
+	
+	public static void printPartialResults(Shell parent, final int round) {
+		Map<String, Object> reportParameters = new HashMap<String, Object>();
+		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+
+		ReportDescriptor rd = new ReportDescriptor("Priebežné výsledky",
+				"RoundResults.jasper", //$NON-NLS-1$
+				ReportLoaderObject.getLoader(), reportParameters) {
+
+			@Override
+			public List<?> invoke() throws Throwable {
+				List<Object> results = new ArrayList<Object>(); 
+
+				for (Result res: Contest.getContest().getResults()) {
+					if (res.getRound() == round) {
+						results.add(res);
+					}	
+				}
+				return results;
+			}
+
+		};
+		
+		PrintDialog dialog = new PrintDialog(parent,
+				"Tlač priebežných výsledkov", 
+				rd);
+		dialog.open();		
+		
+	}
 
 	public static void printBoats(Shell parent) {
 		
