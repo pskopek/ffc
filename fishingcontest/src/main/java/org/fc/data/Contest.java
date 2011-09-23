@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 import java.util.TreeSet;
 
 import javax.xml.stream.XMLInputFactory;
@@ -459,6 +460,11 @@ public class Contest {
 	
 	private void singleDraw() throws ContestDrawException {
 		
+		for (Team t: teams) {
+			t.reset();
+		}
+		
+		
 		Team[] perm = generatePermutation(this.teams, 3123, 5000);
 		
 		checkRules(perm);
@@ -503,6 +509,7 @@ public class Contest {
 		
 		teams = new ArrayList<Team>(perm.length);
 		
+		System.out.println("Before sitting order");
 		for (int teamIndex = 0; teamIndex < perm.length; teamIndex++) {
 			Team t = perm[teamIndex];
 			teams.add(t);
@@ -537,6 +544,10 @@ public class Contest {
 				fillLists(round, sector, front, rear, referee);
 				assignBoats(round, front, rear, referee);
 			}
+			
+			// sector H needs locations too
+			scrambleTeamsOnH(round);
+			
 		}
 		
 	}
@@ -605,6 +616,25 @@ public class Contest {
 		}
 		
 		
+	}
+	
+	private void scrambleTeamsOnH(int round) {
+		
+		ArrayList<Team> toScramble = new ArrayList<Team>(teams.size() / NUM_ROUNDS);
+		
+		for (Team t: this.teams) {
+			String ts = t.getRoundPlan().get(round).getSector();
+			if (ts.equals("H")) {
+				toScramble.add(t);
+			}
+		}
+		
+		Collections.shuffle(toScramble, new Random(System.currentTimeMillis()));
+
+		int location = 1;
+		for (Team t: toScramble) {
+			t.getRoundPlan().get(round).setLocation(location++);
+		}
 	}
 	
 	private void createPlan(Team t, int teamIndex, int roundNumber) throws ContestDrawException {

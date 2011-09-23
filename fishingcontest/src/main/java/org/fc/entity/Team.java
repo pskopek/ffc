@@ -31,6 +31,10 @@ public class Team {
 	
 	public Team() {
 		id = Contest.getContest().getNextDataSeq();
+		reset();
+	}
+	
+	public void reset() {
 		roundPlan = new ArrayList<Round>(Contest.getContest().getNumRounds());
 		roundGain = new ArrayList<Gain>(Contest.getContest().getNumRounds());
 		for (int i = 0; i < Contest.getContest().getNumRounds(); i++) {
@@ -39,6 +43,7 @@ public class Team {
 		}
 		
 		catched = new ArrayList<Catch>(20);
+		
 	}
 	
 	public Team(Long id) {
@@ -110,7 +115,10 @@ public class Team {
 			    sb.append("]");
 			}
 			else if (r.getSector() != null && r.getSector().equals("H")) {
-				sb.append(" Hr ");
+				sb.append("H[");
+				sb.append(r.getLocation());
+				sb.append("]");
+				
 			}
 			else {
 				sb.append(r.getSector());
