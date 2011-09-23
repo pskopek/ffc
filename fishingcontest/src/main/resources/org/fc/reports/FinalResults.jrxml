@@ -1,0 +1,578 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="FinalResults" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="contestDate" class="java.lang.String"/>
+	<field name="FinalResult.order" class="java.lang.Integer"/>
+	<field name="FinalResult.teamId" class="java.lang.Long"/>
+	<field name="FinalResult.name" class="java.lang.String"/>
+	<field name="FinalResult.organisation" class="java.lang.String"/>
+	<field name="FinalResult.r1loc" class="java.lang.String"/>
+	<field name="FinalResult.r1cips" class="java.lang.Integer"/>
+	<field name="FinalResult.r1amount" class="java.lang.Integer"/>
+	<field name="FinalResult.r1max" class="java.lang.Integer"/>
+	<field name="FinalResult.r1orderPoints" class="java.lang.Integer"/>
+	<field name="FinalResult.r2loc" class="java.lang.String"/>
+	<field name="FinalResult.r2cips" class="java.lang.Integer"/>
+	<field name="FinalResult.r2amount" class="java.lang.Integer"/>
+	<field name="FinalResult.r2max" class="java.lang.Integer"/>
+	<field name="FinalResult.r2orderPoints" class="java.lang.Integer"/>
+	<field name="FinalResult.r3loc" class="java.lang.String"/>
+	<field name="FinalResult.r3cips" class="java.lang.Integer"/>
+	<field name="FinalResult.r3amount" class="java.lang.Integer"/>
+	<field name="FinalResult.r3max" class="java.lang.Integer"/>
+	<field name="FinalResult.r3orderPoints" class="java.lang.Integer"/>
+	<field name="FinalResult.r4loc" class="java.lang.String"/>
+	<field name="FinalResult.r4cips" class="java.lang.Integer"/>
+	<field name="FinalResult.r4amount" class="java.lang.Integer"/>
+	<field name="FinalResult.r4max" class="java.lang.Integer"/>
+	<field name="FinalResult.r4orderPoints" class="java.lang.Integer"/>
+	<field name="FinalResult.orderPoints" class="java.lang.Integer"/>
+	<field name="FinalResult.cips" class="java.lang.Integer"/>
+	<field name="FinalResult.amount" class="java.lang.Integer"/>
+	<field name="FinalResult.max" class="java.lang.Integer"/>
+	<title>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="604" height="24"/>
+				<textElement markup="none">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA["YACHTER CUP 2011 - záverečné výsledky"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="696" y="0" width="67" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{contestDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="40"/>
+				<graphicElement>
+					<pen lineWidth="1.5"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement x="18" y="0" width="127" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Meno]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="146" y="0" width="96" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Organizácia]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="20" width="13" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="258" y="20" width="16" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Poč.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="275" y="20" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Body]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="306" y="20" width="15" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="243" y="0" width="78" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kolo č. 1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="0" width="78" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kolo č. 2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="355" y="20" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Body]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="338" y="20" width="16" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Poč.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="386" y="20" width="15" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="323" y="20" width="13" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="0" width="78" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kolo č. 3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="20" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Body]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="417" y="20" width="16" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Poč.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="466" y="20" width="15" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="403" y="20" width="13" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="0" width="78" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Kolo č. 4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="515" y="20" width="30" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Body]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="497" y="20" width="16" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Poč.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="546" y="20" width="15" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[P.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="483" y="20" width="13" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[S]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="565" y="0" width="41" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Suma
+poradí]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="609" y="0" width="44" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Body]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="703" y="0" width="44" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Max
+ryba]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="656" y="0" width="44" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Počet
+rýb]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="751" y="0" width="44" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[ATP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="17" height="40"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Por.]]></text>
+			</staticText>
+			<line>
+				<reportElement x="16" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="144" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="241" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="322" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="403" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="482" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="564" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="608" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="655" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="702" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="750" y="0" width="1" height="40"/>
+			</line>
+			<line>
+				<reportElement x="242" y="19" width="322" height="1"/>
+			</line>
+			<line>
+				<reportElement x="256" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="275" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="306" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="355" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="386" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="336" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="435" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="466" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="416" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="515" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="546" y="20" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="496" y="20" width="1" height="20"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="15" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="802" height="15"/>
+			</rectangle>
+			<textField>
+				<reportElement x="18" y="0" width="127" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="146" y="0" width="96" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.organisation}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="243" y="0" width="13" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.r1loc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="258" y="0" width="16" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r1amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="275" y="0" width="30" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r1cips}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="306" y="0" width="15" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r1orderPoints}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="323" y="0" width="13" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.r2loc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="338" y="0" width="16" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r2amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="386" y="0" width="15" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r2orderPoints}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="355" y="0" width="30" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r1cips}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="403" y="0" width="13" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.r3loc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="417" y="0" width="16" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r3amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="466" y="0" width="15" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r3orderPoints}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="435" y="0" width="30" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r3cips}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="483" y="0" width="13" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{FinalResult.r4loc}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="497" y="0" width="16" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r4amount}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="546" y="0" width="15" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r4orderPoints}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="515" y="0" width="30" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.r4cips}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="565" y="0" width="41" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.orderPoints}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="656" y="0" width="44" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.amount}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="703" y="0" width="44" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.max}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="751" y="0" width="44" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[0]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="609" y="0" width="44" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.cips}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="16" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="144" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="241" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="256" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="275" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="306" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="322" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="336" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="355" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="386" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="403" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="416" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="435" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="466" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="482" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="496" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="515" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="546" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="564" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="608" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="655" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="702" y="0" width="1" height="15"/>
+			</line>
+			<line>
+				<reportElement x="750" y="0" width="1" height="15"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="0" width="15" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$F{FinalResult.order}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

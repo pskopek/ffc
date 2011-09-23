@@ -21,6 +21,7 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.XMLEvent;
 
 import org.fc.entity.Catch;
+import org.fc.entity.FinalResult;
 import org.fc.entity.Gain;
 import org.fc.entity.Result;
 import org.fc.entity.Round;
@@ -47,6 +48,8 @@ public class Contest {
 	private ArrayList<ArrayList<Catch>> roundCatch;
 	
 	private ArrayList<Result> results = new ArrayList<Result>();
+	
+	private ArrayList<FinalResult> finalResults = new ArrayList<FinalResult>();
 	
 	private static Contest CONTEST = null;
 	
@@ -893,5 +896,89 @@ public class Contest {
 		return results;
 	}
 	
+	
+	public void finalResultsCalculation() {
+		
+		finalResults.clear();
+		results.clear();
+		
+		for (int round = 1; round <= NUM_ROUNDS; round++ ) {
+			roundResultsCalculation(round, false);
+		}
+
+		for (Team t: teams) {
+			
+			FinalResult fr = new FinalResult();
+			fr.setTeamId(t.getId());
+			fr.setName(t.getName());
+			fr.setOrganisation(t.getOrganisation());
+			finalResults.add(fr);
+			
+			int checkPoint = 0;
+			for (Result r: results) {
+				if (r.getTeamId() == t.getId().longValue()) {
+					if (r.getRound() == 1) {
+						checkPoint++;
+						fr.setR1loc(r.getSector());
+						fr.setR1cips(r.getCips());
+						fr.setR1amount(r.getAmount());
+						fr.setR1max(r.getMax());
+						fr.setR1orderPoints(r.getOrderPoints());
+					}
+					else if (r.getRound() == 2) {
+						checkPoint++;
+						fr.setR2loc(r.getSector());
+						fr.setR2cips(r.getCips());
+						fr.setR2amount(r.getAmount());
+						fr.setR2max(r.getMax());
+						fr.setR2orderPoints(r.getOrderPoints());
+					}
+					else if (r.getRound() == 3) {
+						checkPoint++;
+						fr.setR3loc(r.getSector());
+						fr.setR3cips(r.getCips());
+						fr.setR3amount(r.getAmount());
+						fr.setR3max(r.getMax());
+						fr.setR3orderPoints(r.getOrderPoints());
+					}
+					else if (r.getRound() == 4) {
+						checkPoint++;
+						fr.setR4loc(r.getSector());
+						fr.setR4cips(r.getCips());
+						fr.setR4amount(r.getAmount());
+						fr.setR4max(r.getMax());
+						fr.setR4orderPoints(r.getOrderPoints());
+					}
+				}
+			}
+			
+			fr.calculateSummary();
+
+			if (checkPoint > NUM_ROUNDS - 1) {
+				// something is very wrong
+				throw new RuntimeException("CheckPoint failed on team " + t + ". More that " + (NUM_ROUNDS - 1) + " in round results.");
+			}
+			
+			
+		}
+
+		
+		System.out.println("Before sort:");
+		for (FinalResult fr: finalResults)
+			System.out.println(fr);
+		
+		Collections.sort(finalResults, new FinalResultsComparator());
+		
+		int order = 1;
+		for (FinalResult fr: finalResults) {
+			fr.setOrder(order++);
+		}
+		
+	}
+
+
+	public ArrayList<FinalResult> getFinalResults() {
+		return finalResults;
+	}
 	
 }

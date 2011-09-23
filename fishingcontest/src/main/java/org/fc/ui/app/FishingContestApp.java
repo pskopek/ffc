@@ -215,6 +215,12 @@ public class FishingContestApp {
 		btnRoundResults.setText("Výsledky/kolo");
 		
 		Button btnFinalResults = new Button(shlFishingContest, SWT.NONE);
+		btnFinalResults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Reports.printFinalResults(shlFishingContest);
+			}
+		});
 		btnFinalResults.setText("Záverečné výsledky");
 		new Label(shlFishingContest, SWT.NONE);
 		new Label(shlFishingContest, SWT.NONE);

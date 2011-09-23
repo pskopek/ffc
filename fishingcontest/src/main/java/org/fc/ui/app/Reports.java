@@ -26,6 +26,31 @@ import yaf.reporting.ui.PrintDialog;
  */
 public class Reports {
 	
+	public static void printFinalResults(Shell parent) {
+		Map<String, Object> reportParameters = new HashMap<String, Object>();
+		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+
+		Contest.getContest().finalResultsCalculation();
+		
+		ReportDescriptor rd = new ReportDescriptor("Záverečné výsledky",
+				"FinalResults.jasper", //$NON-NLS-1$
+				ReportLoaderObject.getLoader(), reportParameters) {
+
+			@Override
+			public List<?> invoke() throws Throwable {
+				return Contest.getContest().getFinalResults();
+			}
+
+		};
+		
+		PrintDialog dialog = new PrintDialog(parent,
+				"Tlač záverečných výsledkov", 
+				rd);
+		dialog.open();		
+		
+	}
+
+	
 	public static void printPartialResults(Shell parent, final int round) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
