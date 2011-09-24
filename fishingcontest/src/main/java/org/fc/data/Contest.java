@@ -995,11 +995,24 @@ public class Contest {
 			
 		}
 
-		
+		/*
 		System.out.println("Before sort:");
 		for (FinalResult fr: finalResults)
 			System.out.println(fr);
+		*/
+
+		// delete dummies from final results
+		ArrayList<FinalResult> deleted = new ArrayList<FinalResult>();
+		for (FinalResult fr: finalResults) {
+			long teamId = fr.getTeamId();
+			Team t = findTeamById(teamId);
+			if (t.isDummy()) {
+				deleted.add(fr);
+			}
+		}
+		finalResults.removeAll(deleted);
 		
+		// sort final results
 		Collections.sort(finalResults, new FinalResultsComparator());
 		
 		int order = 1;

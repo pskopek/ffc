@@ -127,7 +127,9 @@ public class FishingContestApp {
 			        String[] filterExt = { "*.xml" };
 			        fd.setFilterExtensions(filterExt);
 			        String selected = fd.open();
-					Contest.getContest().dumpToFile(selected);
+					if (selected != null) {
+						Contest.getContest().dumpToFile(selected);
+					}
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
