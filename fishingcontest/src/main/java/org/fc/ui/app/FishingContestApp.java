@@ -180,7 +180,15 @@ public class FishingContestApp {
 		gd_btnPrintBoats.widthHint = 100;
 		btnPrintBoats.setLayoutData(gd_btnPrintBoats);
 		btnPrintBoats.setText("Tlač lodí");
-		new Label(shlFishingContest, SWT.NONE);
+		
+		Button btnFRRegistrated = new Button(shlFishingContest, SWT.NONE);
+		btnFRRegistrated.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				Reports.printFinalResults(shlFishingContest, true);
+			}
+		});
+		btnFRRegistrated.setText("Záv. výs. registrovaní");
 		
 		Button btnResults = new Button(shlFishingContest, SWT.NONE);
 		btnResults.addSelectionListener(new SelectionAdapter() {
@@ -220,7 +228,7 @@ public class FishingContestApp {
 		btnFinalResults.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				Reports.printFinalResults(shlFishingContest);
+				Reports.printFinalResults(shlFishingContest, false);
 			}
 		});
 		btnFinalResults.setText("Záverečné výsledky");

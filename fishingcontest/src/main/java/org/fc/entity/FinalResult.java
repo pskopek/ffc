@@ -49,7 +49,7 @@ public class FinalResult {
 	}
 	
 	public void calculateSummary() {
-		orderPoints = nice(r1orderPoints) + nice(r2orderPoints) + nice(r3orderPoints) + nice(r4orderPoints) - 16;
+		orderPoints = nice(r1orderPoints) + nice(r2orderPoints) + nice(r3orderPoints) + nice(r4orderPoints);
 		cips = nice(r1cips) + nice(r2cips) + nice(r3cips) + nice(r4cips);
 		amount = nice(r1amount) + nice(r2amount) + nice(r3amount) + nice(r4amount);
 		max = Math.max(Math.max(nice(r1max), nice(r2max)), Math.max(nice(r3max), nice(r4max)));

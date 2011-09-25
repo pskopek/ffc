@@ -930,7 +930,7 @@ public class Contest {
 	}
 	
 	
-	public void finalResultsCalculation() {
+	public void finalResultsCalculation(boolean registratedOnly) {
 		
 		finalResults.clear();
 		results.clear();
@@ -1002,12 +1002,21 @@ public class Contest {
 		*/
 
 		// delete dummies from final results
+		// and possible non-registered guys (official Slovak LRU mucha competitor)
 		ArrayList<FinalResult> deleted = new ArrayList<FinalResult>();
 		for (FinalResult fr: finalResults) {
 			long teamId = fr.getTeamId();
 			Team t = findTeamById(teamId);
 			if (t.isDummy()) {
 				deleted.add(fr);
+			}
+			if (registratedOnly) {
+				for (Integer non: NonRegistered.nonRegisteredList) {
+					long nr = non.longValue();
+					if (nr == teamId) {
+						deleted.add(fr);
+					}
+				}
 			}
 		}
 		finalResults.removeAll(deleted);
