@@ -103,7 +103,8 @@ public class FishingContestApp {
 			        String[] filterExt = { "*.xml", "*.*" };
 			        fd.setFilterExtensions(filterExt);
 			        String selected = fd.open();
-					Contest.getContest().loadFromFile(selected);
+			        if (selected != null)
+			        	Contest.getContest().loadFromFile(selected);
 				}
 				catch (Exception ex) {
 					ex.printStackTrace();
