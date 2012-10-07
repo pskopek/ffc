@@ -32,6 +32,17 @@
   		<version>1.7.10</version>
   	</dependency>
   	<dependency>
+        <groupId>org.eclipse.swt</groupId>
+        <artifactId>org.eclipse.swt.gtk.linux.x86_64</artifactId>
+        <version>3.7.2</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.ui</groupId>
+        <artifactId>org.eclipse.ui.workbench</artifactId>
+        <version>3.7.1.v20120104-1859</version>
+    </dependency>
+
+  	<!--  dependency>
   		<groupId>org.eclipse.swt</groupId>
   		<artifactId>swt-system</artifactId>
   		<version>3.7</version>
@@ -53,6 +64,21 @@
   		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.jface_3.7.0.I20110522-1430.jar</systemPath>
   	</dependency>
   	<dependency>
+  		<groupId>org.eclipse.core</groupId>
+  		<artifactId>core-commands</artifactId>
+  		<version>3.7</version>
+  		<scope>system</scope>
+  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar</systemPath>
+  	</dependency>
+  	<dependency>
+  		<groupId>org.eclipse.equinox</groupId>
+  		<artifactId>common</artifactId>
+  		<version>3.7</version>
+  		<scope>system</scope>
+  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar</systemPath>
+  	</dependency -->
+
+  	<dependency>
   		<groupId>org.eclipse.swt</groupId>
   		<artifactId>jface-databinding</artifactId>
   		<version>3.7</version>
@@ -64,7 +90,7 @@
   		<artifactId>jface-text</artifactId>
   		<version>3.7</version>
   		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.jface.text_3.7.0.v20110505-0800.jar</systemPath>
+  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.jface.text_3.7.2.v20111213-1208.jar</systemPath>
   	</dependency>
   	<dependency>
   		<groupId>org.eclipse.core</groupId>
@@ -95,14 +121,6 @@
   		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.core.databinding.property_1.4.0.I20110222-0800.jar</systemPath>
   	</dependency>
   	<dependency>
-  		<groupId>org.eclipse.core</groupId>
-  		<artifactId>core-commands</artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.core.commands_3.6.0.I20110111-0800.jar</systemPath>
-  	</dependency>
-  	
-  	<dependency>
   		<groupId>jasperassistant</groupId>
   		<artifactId>swtjasperviewer</artifactId>
   		<version>3.7</version>
@@ -118,64 +136,20 @@
   		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.core.runtime_3.7.0.v20110110.jar</systemPath>
   	</dependency>
   	
-  	<dependency>
-  		<groupId>org.eclipse.equinox</groupId>
-  		<artifactId>common</artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/org.eclipse.equinox.common_3.6.0.v20110523.jar</systemPath>
-  	</dependency>
+  	
   	<dependency>
   		<groupId>com.ibm</groupId>
   		<artifactId>icu</artifactId>
   		<version>4.4.2</version>
   		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/com.ibm.icu_4.4.2.v20110208.jar</systemPath>
-  	</dependency>
- <!-- 
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
-  	</dependency>
-  	<dependency>
-  		<groupId>org.eclipse.</groupId>
-  		<artifactId></artifactId>
-  		<version>3.7</version>
-  		<scope>system</scope>
-  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/</systemPath>
+  		<systemPath>/opt/eclipse/eclipse3.7-x86_64/plugins/com.ibm.icu_4.4.2.v20110823.jar</systemPath>
   	</dependency>
   	
-  	-->
   </dependencies>
+  <repositories>
+    <repository>
+        <id>swt-repo</id>
+        <url>https://swt-repo.googlecode.com/svn/repo/</url>
+    </repository>
+  </repositories>
 </project>
