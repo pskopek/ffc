@@ -472,6 +472,7 @@ public class Contest {
 	}
 	
 	private void singleDraw() throws ContestDrawException {
+		System.out.println("singleDraw");
 		
 		ArrayList<Team> realTeams = new ArrayList<Team>();
 		ArrayList<Team> dummyTeams = new ArrayList<Team>();
@@ -486,8 +487,6 @@ public class Contest {
 			}
 		}
 		
-		
-		//Team[] perm = generatePermutation(realTeams, 3123, 5000);
 		
 		Collections.shuffle(realTeams, new Random(System.currentTimeMillis()));
 		
@@ -513,16 +512,67 @@ public class Contest {
 			}
 		}
 		
-		
-		//checkRules(perm);
 		setNewPermutationAsTeams(realTeams.toArray(new Team[realTeams.size()]));
 
-		
-		
+		try {
+			checkRules();
+		}
+		catch (Throwable e) {
+			throw new ContestDrawException("Kontrola pravidiel zlyhala, vylosovanie nebolo úspešné.", e);
+		}
+
 	}
 	
 	
-	private void checkRules(Team[] perm) {
+	private void checkRules() {
+
+		checkSectorsForTeams();
+		
+	}
+	
+	/**
+	 *  Check each team plan to contain proper sectors
+	 */
+	private void checkSectorsForTeams() {
+
+		for (Team t: teams) {
+			
+			ArrayList<Round> plan = t.getRoundPlan();
+			ArrayList<String> chkSector1 = new ArrayList<String>();
+			ArrayList<String> chkSector2 = new ArrayList<String>();
+			for (int round = 0; round < NUM_ROUNDS; round++) {
+				Round r = plan.get(round);
+				if (r.getRole() != null && r.getRole().equals("R")) {
+					chkSector1.add("R");
+					chkSector2.add("R");
+				}
+				else {
+					chkSector1.add(r.getSector());
+					chkSector2.add(t.getPlannedSector(round));
+				}
+			}
+			
+			Collections.sort(chkSector1);
+			Collections.sort(chkSector2);
+			
+			StringBuilder sb = new StringBuilder();
+			for (String s: chkSector1) 
+				sb.append(s);
+			String chk1 = sb.toString();		
+
+			sb = new StringBuilder();
+			for (String s: chkSector2) 
+				sb.append(s);
+			String chk2 = sb.toString();		
+			
+			if (!chk1.equals(chk2)) {
+				throw new RuntimeException("Oba kontrolne stringy musia byt rovnaké 1:" + chk1 + " 2:"+chk2);
+			}
+			if (!chk1.equals("ABHR")) {
+				throw new RuntimeException("Oba kontrolne stringy musia byt rovné ABHR 1:" + chk1 + " 2:"+chk2);
+			}
+				
+		}
 		
 	}
 	
@@ -586,7 +636,7 @@ public class Contest {
 	}
 	
 	private void assignBoats(int round, ArrayList<Team> front, ArrayList<Team> rear, ArrayList<Team> referee) throws ContestDrawException {
-		System.out.println("assignBoats");
+		System.out.println("assignBoats " + round);
 		
 		Team[] pf = generatePermutation(front);
 		Team[] pr = generatePermutation(rear);
@@ -655,6 +705,8 @@ public class Contest {
 	
 	private void scrambleTeamsOnH(int round) {
 		
+		System.out.println("scrambling on H " + round);
+		
 		ArrayList<Team> toScramble = new ArrayList<Team>(teams.size() / NUM_ROUNDS);
 		
 		for (Team t: this.teams) {
@@ -664,12 +716,14 @@ public class Contest {
 			}
 		}
 		
+		System.out.println("xx shuffling");
 		Collections.shuffle(toScramble, new Random(System.currentTimeMillis()));
 
 		int location = 1;
 		for (Team t: toScramble) {
 			t.getRoundPlan().get(round).setLocation(location++);
 		}
+		System.out.println("shuffling on H - done");
 	}
 	
 	private void createPlan(Team t, int teamIndex, int roundNumber, int numberOfTeams) throws ContestDrawException {
