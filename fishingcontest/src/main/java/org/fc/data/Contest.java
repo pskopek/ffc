@@ -202,6 +202,7 @@ public class Contest {
 			xmlw.writeAttribute("dummy", Boolean.toString(t.isDummy()));
 			xmlw.writeAttribute("disq", Boolean.toString(t.isDisqualified()));
 			xmlw.writeAttribute("fee", Integer.toString(t.getFee()));
+			xmlw.writeAttribute("referee", Boolean.toString(t.isReferee()));
 		
 			writeRoundPlan(xmlw, t);
 			writeRoundGain(xmlw, t);
@@ -382,6 +383,9 @@ public class Contest {
 			}
 			else if (attr.equals("fee")) {
 				t.setFee(Integer.parseInt(val));
+			}
+			else if (attr.equals("referee")) {
+				t.setReferee(Boolean.parseBoolean(val));
 			}
 		}
 		
