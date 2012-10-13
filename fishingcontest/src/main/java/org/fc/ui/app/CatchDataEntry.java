@@ -57,7 +57,9 @@ public class CatchDataEntry extends Shell {
 	private Text txtDefaultRound;
 	private Text txtDefaultSector;
 	private Text txtDefaultFishType;
+	private Text filter;
 	
+	private TeamFilter teamFilter = new TeamFilter();
 
 	/**
 	 * Create the shell.
@@ -77,7 +79,28 @@ public class CatchDataEntry extends Shell {
 		composite_1.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Composite composite_5 = new Composite(composite_1, SWT.NONE);
-		composite_5.setLayout(new GridLayout(6, false));
+		composite_5.setLayout(new GridLayout(8, false));
+		
+		filter = new Text(composite_5, SWT.BORDER);
+		filter.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				teamFilter.setSearchText(filter.getText());
+				teamTableViewer.refresh();
+			}
+		});
+		GridData gd_filter = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_filter.widthHint = 223;
+		filter.setLayoutData(gd_filter);
+		
+		Button btnFilter = new Button(composite_5, SWT.NONE);
+		btnFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				filter.setText("");
+			}
+		});
+		btnFilter.setToolTipText("Zruš filter");
+		btnFilter.setText("Zruš filter");
 		
 		Label lblNewLabel_3 = new Label(composite_5, SWT.NONE);
 		lblNewLabel_3.setBounds(0, 0, 70, 17);
@@ -100,9 +123,18 @@ public class CatchDataEntry extends Shell {
 		
 		teamTableViewer = new TableViewer(composite_5, SWT.BORDER | SWT.FULL_SELECTION);
 		tableTeam = teamTableViewer.getTable();
-		tableTeam.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 6, 1));
+		tableTeam.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				clearCatchFrame();
+			}
+		});
+		GridData gd_tableTeam = new GridData(SWT.FILL, SWT.FILL, true, true, 8, 1);
+		gd_tableTeam.widthHint = 870;
+		tableTeam.setLayoutData(gd_tableTeam);
 		tableTeam.setLinesVisible(true);
 		tableTeam.setHeaderVisible(true);
+		teamTableViewer.addFilter(teamFilter);
 		
 		TableColumn tblclmnNewColumn = new TableColumn(tableTeam, SWT.NONE);
 		tblclmnNewColumn.setWidth(35);
@@ -119,12 +151,6 @@ public class CatchDataEntry extends Shell {
 		TableColumn tblclmnNewColumn_3 = new TableColumn(tableTeam, SWT.NONE);
 		tblclmnNewColumn_3.setWidth(30);
 		tblclmnNewColumn_3.setText("Dis");
-		new Label(composite_5, SWT.NONE);
-		new Label(composite_5, SWT.NONE);
-		new Label(composite_5, SWT.NONE);
-		new Label(composite_5, SWT.NONE);
-		new Label(composite_5, SWT.NONE);
-		new Label(composite_5, SWT.NONE);
 		
 		Composite composite_2 = new Composite(sashForm, SWT.NONE);
 		composite_2.setLayout(new GridLayout(1, false));
@@ -272,6 +298,8 @@ public class CatchDataEntry extends Shell {
 				catchTableViewer.add(c);
 				catchTableViewer.setSelection(new StructuredSelection(c), true);
 				m_bindingContext.updateModels();
+				txtLength.setText("");
+				txtLength.setFocus();
 				
 			}
 		});
@@ -432,5 +460,13 @@ public class CatchDataEntry extends Shell {
 		if (teams != null && teams.size() > 0)
 			teamTableViewer.setSelection(new StructuredSelection(teams.get(0)), true);
 
+	}
+	
+	private void clearCatchFrame() {
+		//txtLength.setText("");
+		//txtCISP.setText("");
+		//txtFishType.setText("");
+		//txtRound.setText("");
+		//txtSector.setText("");
 	}
 }

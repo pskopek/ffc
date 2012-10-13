@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -34,7 +35,8 @@ import org.fc.entity.report.Boats;
  */
 public class Contest {
 
-	public static String CONTEST_DATE = "24.09.2011";
+	public static final String CONTEST_DATE = "13.10.2012";
+	public static final String YEAR = CONTEST_DATE.substring(CONTEST_DATE.lastIndexOf(".") + 1);  // for reporting
 	public static final String FISH_TYPE = "Pd";
 	public static final String SECTOR = "A";
 	public static final int ROUND = 1;
@@ -63,7 +65,7 @@ public class Contest {
 	
 	private Contest() {
 		
-		NUM_ROUNDS = 4;
+		NUM_ROUNDS = 6;
 		
 		
 		roundCatch = new ArrayList<ArrayList<Catch>>(NUM_ROUNDS);
@@ -447,11 +449,11 @@ public class Contest {
 	 */
 	public void draw() throws ContestDrawException {
 		
-		if (teams.size() % 8 != 0) {
-			throw new ContestDrawException("Počet súťažiacich musí byť deliteľný číslom 8.\nAktuálny počet je však " + teams.size());
+		if (teams.size() % 6 != 0) {
+			throw new ContestDrawException("Počet súťažiacich musí byť deliteľný číslom 6.\nAktuálny počet je však " + teams.size());
 		}
-		else if (teams.size() > 64) {
-			throw new ContestDrawException("Počet súťažiacich nesmie byť väčší ako 64.\nAktuálny počet je však " + teams.size());
+		else if (teams.size() > 60) {
+			throw new ContestDrawException("Počet súťažiacich nesmie byť väčší ako 60.\nAktuálny počet je však " + teams.size());
 		}
 		
 		int count = NUM_TRIES;
@@ -523,7 +525,9 @@ public class Contest {
 
 	}
 	
-	
+	/**
+	 * Method to check various rules.
+	 */
 	private void checkRules() {
 
 		checkSectorsForTeams();
@@ -535,6 +539,8 @@ public class Contest {
 	 */
 	private void checkSectorsForTeams() {
 
+		final String checkString = "APARAZBPBRBZ";
+		
 		for (Team t: teams) {
 			
 			ArrayList<Round> plan = t.getRoundPlan();
@@ -542,14 +548,8 @@ public class Contest {
 			ArrayList<String> chkSector2 = new ArrayList<String>();
 			for (int round = 0; round < NUM_ROUNDS; round++) {
 				Round r = plan.get(round);
-				if (r.getRole() != null && r.getRole().equals("R")) {
-					chkSector1.add("R");
-					chkSector2.add("R");
-				}
-				else {
-					chkSector1.add(r.getSector());
-					chkSector2.add(t.getPlannedSector(round));
-				}
+				chkSector1.add(r.getSector()+r.getRole());
+				chkSector2.add(t.getPlannedSector(round)+t.getPlannedRole(round));
 			}
 			
 			Collections.sort(chkSector1);
@@ -568,8 +568,8 @@ public class Contest {
 			if (!chk1.equals(chk2)) {
 				throw new RuntimeException("Oba kontrolne stringy musia byt rovnaké 1:" + chk1 + " 2:"+chk2);
 			}
-			if (!chk1.equals("ABHR")) {
-				throw new RuntimeException("Oba kontrolne stringy musia byt rovné ABHR 1:" + chk1 + " 2:"+chk2);
+			if (!chk1.equals(checkString)) {
+				throw new RuntimeException("Oba kontrolne stringy musia byt rovné " + checkString + "1:" + chk1 + " 2:"+chk2);
 			}
 				
 		}
@@ -598,10 +598,8 @@ public class Contest {
 			teams.add(t);
 			t.setId((long)teamIndex + 1);
 			
-			for (int roundNumber = 0; roundNumber < NUM_ROUNDS; roundNumber++) {
-				createPlan(t, teamIndex, roundNumber, perm.length);
-			}
-		
+			createPlan(t, teamIndex);
+			
 			System.out.println(t.getPlanAsText());
 			
 		}
@@ -629,7 +627,7 @@ public class Contest {
 			}
 			
 			// sector H needs locations too
-			scrambleTeamsOnH(round);
+			//scrambleTeamsOnH(round);
 			
 		}
 		
@@ -726,93 +724,46 @@ public class Contest {
 		System.out.println("shuffling on H - done");
 	}
 	
-	private void createPlan(Team t, int teamIndex, int roundNumber, int numberOfTeams) throws ContestDrawException {
+	
+	/*
+	 
+	Group  G0  G1  G2  G3  G4  G5
+----------------------------------	
+	Round  
+	  1.   AP  AZ  AR  BP  BZ  BR               
+	  2.   BZ  BP  BR  AZ  AP  AR                     
+	  3.   AR  AP  AZ  BR  BP  BZ          
+	  4.   BR  BZ  BP  AR  AZ  AP          
+	  5.   AZ  AR  AP  BZ  BR  BP           
+	  6.   BP  BR  BZ  AP  AR  AZ           
+
+	 */
+	
+	/* the first letter means sector, the second means role */
+	String template[][] = {
+			{"AP", "AZ", "AR", "BP", "BZ", "BR"},
+			{"BZ", "BP", "BR", "AZ", "AP", "AR"},                     
+			{"AR", "AP", "AZ", "BR", "BP", "BZ"},          
+		    {"BR", "BZ", "BP", "AR", "AZ", "AP"},          
+		    {"AZ", "AR", "AP", "BZ", "BR", "BP"},           
+		    {"BP", "BR", "BZ", "AP", "AR", "AZ"},           
+		};
+	
+	
+	private void createPlan(Team t, int teamIndex) throws ContestDrawException {
 
 		ArrayList<Round> roundPlan = t.getRoundPlan();
+		int group = teamIndex % template[0].length;   // all rounds has to have equal number of groups, e.g. I can take the first one.
 		
-		if (t.getRoundPlan().get(roundNumber) == null) {
+		for (int roundNumber = 0; roundNumber < NUM_ROUNDS; roundNumber++) {
 			Round r = new Round(roundNumber);
-			t.getRoundPlan().add(r);
-		}
-			
-		int order = teamIndex + 1;
-		
-		int border = numberOfTeams / 4;
-		
-		if (order >= 1 && order <= border) {
-			if (roundNumber == 0) {
-				roundPlan.get(roundNumber).setSector("A"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 0 ? "P" : "Z" ));
-			} 
-			else if (roundNumber == 1) {
-				roundPlan.get(roundNumber).setSector("B"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 1 ? "P" : "Z" )); 
-			}
-			else if (roundNumber == 2) {
-				roundPlan.get(roundNumber).setRole("R"); 
-				roundPlan.get(roundNumber).setSector((order % 2 == 0 ? "A" : "B" )); 
-			}
-			else if (roundNumber == 3) {
-				roundPlan.get(roundNumber).setSector("H"); 
-			}
-		}
-		else if (order >= border + 1 && order <= border * 2) {
-			if (roundNumber == 0) {
-				roundPlan.get(roundNumber).setSector("B"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 1 ? "P" : "Z" )); 
-			} 
-			else if (roundNumber == 1) {
-				roundPlan.get(roundNumber).setRole("R"); 
-				roundPlan.get(roundNumber).setSector((order % 2 == 0 ? "A" : "B" )); 
-			}
-			else if (roundNumber == 2) {
-				roundPlan.get(roundNumber).setSector("H"); 
-			}
-			else if (roundNumber == 3) {
-				roundPlan.get(roundNumber).setSector("A"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 0 ? "P" : "Z" )); 
-			}
-		}
-		else if (order >= border * 2 + 1 && order <= border * 3) {
-			if (roundNumber == 0) {
-				roundPlan.get(roundNumber).setRole("R"); 
-				roundPlan.get(roundNumber).setSector((order % 2 == 0 ? "A" : "B" )); 
-			} 
-			else if (roundNumber == 1) {
-				roundPlan.get(roundNumber).setSector("H"); 
-			}
-			else if (roundNumber == 2) {
-				roundPlan.get(roundNumber).setSector("A"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 0 ? "P" : "Z" )); 
-			}
-			else if (roundNumber == 3) {
-				roundPlan.get(roundNumber).setSector("B"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 1 ? "P" : "Z" )); 
-			}
-			
-		}
-		else if (order >= border * 3 + 1 && order <= border * 4) {
-			if (roundNumber == 0) {
-				roundPlan.get(roundNumber).setSector("H"); 
-			} 
-			else if (roundNumber == 1) {
-				roundPlan.get(roundNumber).setSector("A"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 0 ? "P" : "Z" )); 
-			}
-			else if (roundNumber == 2) {
-				roundPlan.get(roundNumber).setSector("B"); 
-				roundPlan.get(roundNumber).setRole((order % 2 == 1 ? "P" : "Z" )); 
-			}
-			else if (roundNumber == 3) {
-				roundPlan.get(roundNumber).setRole("R"); 
-				roundPlan.get(roundNumber).setSector((order % 2 == 0 ? "A" : "B" )); 
-			}
-			
-		}
-		else {
-			throw new ContestDrawException("Neočakávaná chyba počas rozlosovania. Počet súťažiacich je viac ako 64.");
+			r.setSector(template[roundNumber][group].substring(0,1));
+			r.setRole(template[roundNumber][group].substring(1,2));
+			roundPlan.set(roundNumber, r);
 		}
 		
+		
+
 	}
 	
 	
@@ -929,21 +880,33 @@ public class Contest {
 		// it is universal, so we can sort all results (including other rounds if they are there) 
 		Collections.sort(results, new RoundResultsComparator());
 
+		Comparator<Result> helperComparator = new RoundResultsComparator();
+		
 		// final order number assignments
 		for (String sector: new String[] {"A", "B", "H"}) {
 
 			int order = 1;
-
+			Result lastResult = results.get(0);  // in case of the same result we have to setOrderPoints to lastOrder (minimal index for all belonging to the group of the same result) 
+			int lastOrder = order;
+			
 			for (int i = 0; i < results.size(); i++) {
 				Result res = results.get(i);
 				if (res.getRound() == round && res.getSector().equals(sector)) {
 					res.setOrder(order);
 					
 					if (res.getAmount() > 0) {
-						res.setOrderPoints(order);
+						
+						if (helperComparator.compare(lastResult, res) == 0) {
+							res.setOrderPoints(lastOrder);
+						}
+						else {
+							res.setOrderPoints(order);
+							lastOrder = order;
+							lastResult = res;
+						}
 					}
 					else {
-						res.setOrderPoints(teams.size() / NUM_ROUNDS);
+						res.setOrderPoints(teams.size() / NUM_ROUNDS * 2);  // because each team is 2x in the sector as front and rear
 					}
 					order++;
 				}
@@ -1035,6 +998,22 @@ public class Contest {
 						fr.setR4amount(r.getAmount());
 						fr.setR4max(r.getMax());
 						fr.setR4orderPoints(r.getOrderPoints());
+					}
+					else if (r.getRound() == 5) {
+						checkPoint++;
+						fr.setR5loc(r.getSector());
+						fr.setR5cips(r.getCips());
+						fr.setR5amount(r.getAmount());
+						fr.setR5max(r.getMax());
+						fr.setR5orderPoints(r.getOrderPoints());
+					}
+					else if (r.getRound() == 6) {
+						checkPoint++;
+						fr.setR6loc(r.getSector());
+						fr.setR6cips(r.getCips());
+						fr.setR6amount(r.getAmount());
+						fr.setR6max(r.getMax());
+						fr.setR6orderPoints(r.getOrderPoints());
 					}
 				}
 			}

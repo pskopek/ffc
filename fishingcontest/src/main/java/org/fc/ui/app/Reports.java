@@ -29,6 +29,7 @@ public class Reports {
 	public static void printTeams(Shell parent) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+		reportParameters.put("year", Contest.YEAR);
 
 		ReportDescriptor rd = new ReportDescriptor("Tlač pretekárov",
 				"teams.jasper", //$NON-NLS-1$
@@ -51,11 +52,12 @@ public class Reports {
 	public static void printFinalResults(Shell parent, boolean registratedOnly) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+		reportParameters.put("year", Contest.YEAR);
 
 		Contest.getContest().finalResultsCalculation(registratedOnly);
 		
 		ReportDescriptor rd = new ReportDescriptor("Záverečné výsledky",
-				"FinalResults.jasper", //$NON-NLS-1$
+				"FinalResults6.jasper", //$NON-NLS-1$
 				ReportLoaderObject.getLoader(), reportParameters) {
 
 			@Override
@@ -75,6 +77,7 @@ public class Reports {
 	public static void printPartialResults(Shell parent, final int round) {
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+		reportParameters.put("year", Contest.YEAR);
 
 		ReportDescriptor rd = new ReportDescriptor("Priebežné výsledky",
 				"RoundResults.jasper", //$NON-NLS-1$
@@ -129,6 +132,7 @@ public class Reports {
 		
 		Map<String, Object> reportParameters = new HashMap<String, Object>();
 		reportParameters.put("contestDate", Contest.CONTEST_DATE);
+		reportParameters.put("year", Contest.YEAR);
 
 		RoundParameter dPar = new RoundParameter(parent);
 		int res = dPar.open();

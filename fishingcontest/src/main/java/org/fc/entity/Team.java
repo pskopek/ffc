@@ -4,6 +4,7 @@
 package org.fc.entity;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import org.fc.data.Contest;
 
@@ -17,6 +18,8 @@ public class Team {
 	
 	private String name;
 	private String organisation;
+	
+	private String searchField;
 	
 	private boolean dummy = false;
 	private boolean disqualified = false;
@@ -60,6 +63,7 @@ public class Team {
 	
 	public void setName(String name) {
 		this.name = name;
+		this.searchField = name.toLowerCase(Locale.forLanguageTag("sk"));
 	}
 	
 	public String getOrganisation() {
@@ -172,6 +176,10 @@ public class Team {
 
 	public void setFee(int fee) {
 		this.fee = fee;
+	}
+
+	public String getSearchField() {
+		return searchField;
 	}
 
 }

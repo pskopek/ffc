@@ -4,20 +4,26 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="contestDate" class="java.lang.String"/>
+	<parameter name="year" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
 	<field name="Team.id" class="java.lang.Long"/>
 	<field name="Team.name" class="java.lang.String"/>
 	<field name="Team.organisation" class="java.lang.String"/>
+	<field name="Team.fee" class="java.lang.Integer"/>
+	<sortField name="Team.name"/>
 	<title>
 		<band height="32" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="390" height="24"/>
+				<reportElement x="0" y="0" width="416" height="24"/>
 				<textElement markup="none">
 					<font size="16" isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA["YACHTER CUP 2011 - súťažiaci"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["YACHTER CUP " + $P{year} + " - súťažiaci"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="416" y="4" width="67" height="20"/>
+				<reportElement x="442" y="4" width="67" height="20"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
@@ -29,8 +35,8 @@
 		<band height="20" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="0" width="24" height="20"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Por.]]></text>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ID]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="34" y="0" width="139" height="20"/>
@@ -43,16 +49,21 @@
 				<text><![CDATA[Organizácia]]></text>
 			</staticText>
 			<line>
-				<reportElement x="0" y="19" width="348" height="1"/>
+				<reportElement x="0" y="19" width="416" height="1"/>
 			</line>
+			<staticText>
+				<reportElement x="335" y="0" width="142" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Zaplatené (€)]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="0" width="24" height="20"/>
+				<reportElement x="0" y="0" width="22" height="20"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.Long"><![CDATA[$F{Team.id}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.id}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="34" y="0" width="139" height="20"/>
@@ -62,8 +73,31 @@
 			<textField>
 				<reportElement x="183" y="0" width="142" height="20"/>
 				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.name}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.organisation}]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement x="351" y="0" width="44" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{Team.fee}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="19" width="416" height="1"/>
+			</line>
+			<line>
+				<reportElement x="176" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="416" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="325" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="24" y="0" width="1" height="20"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="1" height="20"/>
+			</line>
 		</band>
 	</detail>
 </jasperReport>

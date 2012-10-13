@@ -28,6 +28,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.core.databinding.observable.list.WritableList;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.ModifyEvent;
 
 public class TeamWindow extends Shell {
 	private DataBindingContext m_bindingContext;
@@ -37,7 +40,10 @@ public class TeamWindow extends Shell {
 	private TableViewer m_teamViever;
 
 	private ArrayList<Team> teams = Contest.getContest().getTeams();
+	private Text text;
 
+	private TeamFilter teamFilter = new TeamFilter();
+	
 	/**
 	 * Create the shell.
 	 * @param display
@@ -46,11 +52,37 @@ public class TeamWindow extends Shell {
 		super(display, SWT.SHELL_TRIM | SWT.APPLICATION_MODAL);
 		setLayout(new GridLayout(1, false));
 		
+		Composite composite_1 = new Composite(this, SWT.NONE);
+		GridData gd_composite_1 = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
+		gd_composite_1.widthHint = 488;
+		composite_1.setLayoutData(gd_composite_1);
+		
+		text = new Text(composite_1, SWT.BORDER);
+		text.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent arg0) {
+				filterTextModified(text, m_teamViever);
+			}
+		});
+		text.setBounds(0, 0, 382, 23);
+		
+		Button btnClearFilter = new Button(composite_1, SWT.NONE);
+		btnClearFilter.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				text.setText("");
+			}
+		});
+		btnClearFilter.setText("Zruš filter");
+		btnClearFilter.setToolTipText("Zruš filter");
+		btnClearFilter.setBounds(390, 0, 88, 25);
+		
 		m_teamViever = new TableViewer(this, SWT.FULL_SELECTION);
 		table = m_teamViever.getTable();
 		table.setLinesVisible(true);
 		table.setHeaderVisible(true);
-		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+		table.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));	
+		
+		m_teamViever.addFilter(teamFilter);
 		
 		TableColumn tblclmnNewColumn_2 = new TableColumn(table, SWT.NONE);
 		tblclmnNewColumn_2.setWidth(35);
@@ -229,4 +261,10 @@ public class TeamWindow extends Shell {
 		//
 		return bindingContext;
 	}
+	
+	private void filterTextModified(Text t, TableViewer tv) {
+		teamFilter.setSearchText(t.getText());
+		tv.refresh();
+	}
+	
 }

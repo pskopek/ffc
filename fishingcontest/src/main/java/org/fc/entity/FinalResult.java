@@ -38,6 +38,18 @@ public class FinalResult {
 	private Integer r4max;
 	private Integer r4orderPoints;
 
+	private String r5loc = null;
+	private Integer r5cips;
+	private Integer r5amount;
+	private Integer r5max;
+	private Integer r5orderPoints;
+
+	private String r6loc = null;
+	private Integer r6cips;
+	private Integer r6amount;
+	private Integer r6max;
+	private Integer r6orderPoints;
+
 	private int orderPoints;
 	private int cips;
 	private int amount;
@@ -49,10 +61,10 @@ public class FinalResult {
 	}
 	
 	public void calculateSummary() {
-		orderPoints = nice(r1orderPoints) + nice(r2orderPoints) + nice(r3orderPoints) + nice(r4orderPoints);
-		cips = nice(r1cips) + nice(r2cips) + nice(r3cips) + nice(r4cips);
-		amount = nice(r1amount) + nice(r2amount) + nice(r3amount) + nice(r4amount);
-		max = Math.max(Math.max(nice(r1max), nice(r2max)), Math.max(nice(r3max), nice(r4max)));
+		orderPoints = nice(r1orderPoints) + nice(r2orderPoints) + nice(r3orderPoints) + nice(r4orderPoints) + nice(r5orderPoints) + nice(r6orderPoints) ;
+		cips = nice(r1cips) + nice(r2cips) + nice(r3cips) + nice(r4cips) + nice(r5cips) + nice(r6cips);
+		amount = nice(r1amount) + nice(r2amount) + nice(r3amount) + nice(r4amount) + nice(r5amount) + nice(r6amount);
+		max = Math.max(Math.max(Math.max(nice(r1max), nice(r2max)), Math.max(nice(r3max), nice(r4max))), Math.max(nice(r5max), nice(r6max)));
 	}
 
 	public String toString() {
@@ -254,6 +266,11 @@ public class FinalResult {
 		this.r3orderPoints = r3orderPoints;
 	}
 
+
+	public void setR1loc(String r1loc) {
+		this.r1loc = r1loc;
+	}
+
 	public String getR4loc() {
 		return r4loc;
 	}
@@ -293,9 +310,85 @@ public class FinalResult {
 	public void setR4orderPoints(Integer r4orderPoints) {
 		this.r4orderPoints = r4orderPoints;
 	}
-
-	public void setR1loc(String r1loc) {
-		this.r1loc = r1loc;
+	
+	public String getR5loc() {
+		return r5loc;
 	}
 
+	public void setR5loc(String r5loc) {
+		this.r5loc = r5loc;
+	}
+
+	public Integer getR5cips() {
+		return r5cips;
+	}
+
+	public void setR5cips(Integer r5cips) {
+		this.r5cips = r5cips;
+	}
+
+	public Integer getR5amount() {
+		return r5amount;
+	}
+
+	public void setR5amount(Integer r5amount) {
+		this.r5amount = r5amount;
+	}
+
+	public Integer getR5max() {
+		return r5max;
+	}
+
+	public void setR5max(Integer r5max) {
+		this.r5max = r5max;
+	}
+
+	public Integer getR5orderPoints() {
+		return r5orderPoints;
+	}
+
+	public void setR5orderPoints(Integer r5orderPoints) {
+		this.r5orderPoints = r5orderPoints;
+	}
+
+	public String getR6loc() {
+		return r6loc;
+	}
+
+	public void setR6loc(String r6loc) {
+		this.r6loc = r6loc;
+	}
+
+	public Integer getR6cips() {
+		return r6cips;
+	}
+
+	public void setR6cips(Integer r6cips) {
+		this.r6cips = r6cips;
+	}
+
+	public Integer getR6amount() {
+		return r6amount;
+	}
+
+	public void setR6amount(Integer r6amount) {
+		this.r6amount = r6amount;
+	}
+
+	public Integer getR6max() {
+		return r6max;
+	}
+
+	public void setR6max(Integer r6max) {
+		this.r6max = r6max;
+	}
+
+	public Integer getR6orderPoints() {
+		return r6orderPoints;
+	}
+
+	public void setR6orderPoints(Integer r6orderPoints) {
+		this.r6orderPoints = r6orderPoints;
+	}
+	
 }
