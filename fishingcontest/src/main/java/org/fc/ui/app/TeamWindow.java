@@ -31,6 +31,8 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.jface.databinding.viewers.ViewerProperties;
+import org.eclipse.core.databinding.beans.PojoProperties;
 
 public class TeamWindow extends Shell {
 	private DataBindingContext m_bindingContext;
@@ -222,6 +224,12 @@ public class TeamWindow extends Shell {
 	public void refreshTeamViewerSelection() {
 		m_teamViever.refresh();
 	}
+	
+	private void filterTextModified(Text t, TableViewer tv) {
+		teamFilter.setSearchText(t.getText());
+		tv.refresh();
+	}
+	
 	protected DataBindingContext initDataBindings() {
 		DataBindingContext bindingContext = new DataBindingContext();
 		//
@@ -236,10 +244,9 @@ public class TeamWindow extends Shell {
 		bindingContext.bindValue(teamVieverOrganisationObserveDetailValue, teamFramegetTxtTextorganisationObserveTextObserveWidget, null, null);
 		//
 		ObservableListContentProvider listContentProvider = new ObservableListContentProvider();
-		m_teamViever.setContentProvider(listContentProvider);
-		//
 		IObservableMap[] observeMaps = PojoObservables.observeMaps(listContentProvider.getKnownElements(), Team.class, new String[]{"id", "name", "organisation", "planAsText", "disqualified", "fee"});
 		m_teamViever.setLabelProvider(new ObservableMapLabelProvider(observeMaps));
+		m_teamViever.setContentProvider(listContentProvider);
 		//
 		WritableList writableList = new WritableList(teams, Team.class);
 		m_teamViever.setInput(writableList);
@@ -259,12 +266,11 @@ public class TeamWindow extends Shell {
 		IObservableValue teamFramegetTxtFeeObserveTextObserveWidget = SWTObservables.observeText(teamFrame.getTxtFee(), SWT.Modify);
 		bindingContext.bindValue(teamVieverFeeObserveDetailValue, teamFramegetTxtFeeObserveTextObserveWidget, null, null);
 		//
+		IObservableValue teamVieverObserveSingleSelection_5 = ViewersObservables.observeSingleSelection(m_teamViever);
+		IObservableValue teamVieverRefereeObserveDetailValue = PojoObservables.observeDetailValue(teamVieverObserveSingleSelection_5, "referee", boolean.class);
+		IObservableValue teamFramegetBtnRefereeObserveSelectionObserveWidget = SWTObservables.observeSelection(teamFrame.getBtnReferee());
+		bindingContext.bindValue(teamVieverRefereeObserveDetailValue, teamFramegetBtnRefereeObserveSelectionObserveWidget, null, null);
+		//
 		return bindingContext;
 	}
-	
-	private void filterTextModified(Text t, TableViewer tv) {
-		teamFilter.setSearchText(t.getText());
-		tv.refresh();
-	}
-	
 }

@@ -23,6 +23,7 @@ public class Team {
 	
 	private boolean dummy = false;
 	private boolean disqualified = false;
+	private boolean referee = false;
 	private int fee;
 	
 	// plan of team role in each round
@@ -180,6 +181,14 @@ public class Team {
 
 	public String getSearchField() {
 		return searchField;
+	}
+
+	public boolean isReferee() {
+		return referee;
+	}
+
+	public void setReferee(boolean referee) {
+		this.referee = referee;
 	}
 
 }

@@ -19,6 +19,7 @@ public class TeamFrame extends Composite {
 	private Button btnDummy;
 	private Label lblNewLabel;
 	private Text txtFee;
+	private Button btnReferee;
 
 	/**
 	 * Create the composite.
@@ -75,7 +76,7 @@ public class TeamFrame extends Composite {
 		new Label(this, SWT.NONE);
 		
 		Composite composite = new Composite(this, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(4, false));
 		GridData gd_composite = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_composite.heightHint = 32;
 		composite.setLayoutData(gd_composite);
@@ -95,6 +96,10 @@ public class TeamFrame extends Composite {
 		gd_btnDummy.widthHint = 123;
 		btnDummy.setLayoutData(gd_btnDummy);
 		btnDummy.setText("Doplnený");
+		
+		btnReferee = new Button(composite, SWT.CHECK);
+		btnReferee.setText("Rozhodca");
+		new Label(composite, SWT.NONE);
 
 	}
 
@@ -115,10 +120,16 @@ public class TeamFrame extends Composite {
 	public Button getBtnDisqualified() {
 		return btnDisqualified;
 	}
+	
 	public Button getBtnDummy() {
 		return btnDummy;
 	}
+	
 	public Text getTxtFee() {
 		return txtFee;
+	}
+
+	public Button getBtnReferee() {
+		return btnReferee;
 	}
 }

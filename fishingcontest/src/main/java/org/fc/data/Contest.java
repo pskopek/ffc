@@ -35,7 +35,7 @@ import org.fc.entity.report.Boats;
  */
 public class Contest {
 
-	public static final String CONTEST_DATE = "13.10.2012";
+	public static final String CONTEST_DATE = "14.10.2012";
 	public static final String YEAR = CONTEST_DATE.substring(CONTEST_DATE.lastIndexOf(".") + 1);  // for reporting
 	public static final String FISH_TYPE = "Pd";
 	public static final String SECTOR = "A";
