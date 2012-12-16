@@ -42,6 +42,8 @@ public class Contest {
 	public static final int ROUND = 1;
 	public static final int NUM_TRIES = 30;
 	
+	public static final boolean REFEREE_MODEL = true;    // iba pre kvalifikaciu
+	
 	private int NUM_ROUNDS;
 	
 	private Long dataSeq = 1L;
@@ -65,7 +67,12 @@ public class Contest {
 	
 	private Contest() {
 		
-		NUM_ROUNDS = 6;
+		if (REFEREE_MODEL) {
+			NUM_ROUNDS = 4;
+		}
+		else {
+			NUM_ROUNDS = 6;
+		}
 		
 		
 		roundCatch = new ArrayList<ArrayList<Catch>>(NUM_ROUNDS);
@@ -482,11 +489,20 @@ public class Contest {
 		
 		ArrayList<Team> realTeams = new ArrayList<Team>();
 		ArrayList<Team> dummyTeams = new ArrayList<Team>();
+		ArrayList<Team> refereeTeams = new ArrayList<Team>();
 		
 		for (Team t: teams) {
 			t.reset();
 			if (t.isDummy()) {
-				dummyTeams.add(t);
+				if (t.isReferee()) {
+					refereeTeams.add(t);
+				}
+				else {
+					dummyTeams.add(t);
+				}
+			}
+			else if (t.isReferee()) {
+				refereeTeams.add(t);
 			}
 			else {
 				realTeams.add(t);
@@ -499,8 +515,8 @@ public class Contest {
 		// add dummy teams at the end of the team lists
 		realTeams.addAll(dummyTeams);
 		
-		if (realTeams.size() != teams.size()) {
-			throw new ContestDrawException("realTeams.size() != teams.size()");
+		if (realTeams.size() + refereeTeams.size() != teams.size()) {
+			throw new ContestDrawException("realTeams.size() + refereeTeams.size() != teams.size()");
 		}
 		
 		// merge dummies
@@ -518,7 +534,7 @@ public class Contest {
 			}
 		}
 		
-		setNewPermutationAsTeams(realTeams.toArray(new Team[realTeams.size()]));
+		setNewPermutationAsTeams(realTeams.toArray(new Team[realTeams.size()]), refereeTeams);
 
 		try {
 			checkRules();
@@ -543,9 +559,12 @@ public class Contest {
 	 */
 	private void checkSectorsForTeams() {
 
-		final String checkString = "APARAZBPBRBZ";
+		final String checkString = (REFEREE_MODEL ? "APAZBPBZ" : "APARAZBPBRBZ");
 		
 		for (Team t: teams) {
+			
+			if (t.isReferee())
+				continue;
 			
 			ArrayList<Round> plan = t.getRoundPlan();
 			ArrayList<String> chkSector1 = new ArrayList<String>();
@@ -573,7 +592,7 @@ public class Contest {
 				throw new RuntimeException("Oba kontrolne stringy musia byt rovnaké 1:" + chk1 + " 2:"+chk2);
 			}
 			if (!chk1.equals(checkString)) {
-				throw new RuntimeException("Oba kontrolne stringy musia byt rovné " + checkString + "1:" + chk1 + " 2:"+chk2);
+				throw new RuntimeException("Oba kontrolne stringy musia byt rovné " + checkString + " 1:" + chk1 + " 2:"+chk2);
 			}
 				
 		}
@@ -592,7 +611,7 @@ public class Contest {
 	}
 	
 	
-	private void setNewPermutationAsTeams(Team[] perm) throws ContestDrawException {
+	private void setNewPermutationAsTeams(Team[] perm, ArrayList<Team> refereeTeams) throws ContestDrawException {
 		
 		teams = new ArrayList<Team>(perm.length);
 		
@@ -608,6 +627,18 @@ public class Contest {
 			
 		}
 		
+		if (REFEREE_MODEL) {
+			System.out.println("Referee:");
+			long teamId = teams.size();
+			int index = 0;
+			for (Team t: refereeTeams) {
+				teams.add(t);
+				t.setId(teamId++);
+				createPlanForReferee(t, index++);
+				System.out.println(t.getPlanAsText());
+			}
+			
+		}
 
 		createBoatSittingOrder();
 		
@@ -629,9 +660,6 @@ public class Contest {
 				fillLists(round, sector, front, rear, referee);
 				assignBoats(round, front, rear, referee);
 			}
-			
-			// sector H needs locations too
-			//scrambleTeamsOnH(round);
 			
 		}
 		
@@ -705,29 +733,6 @@ public class Contest {
 		
 	}
 	
-	private void scrambleTeamsOnH(int round) {
-		
-		System.out.println("scrambling on H " + round);
-		
-		ArrayList<Team> toScramble = new ArrayList<Team>(teams.size() / NUM_ROUNDS);
-		
-		for (Team t: this.teams) {
-			String ts = t.getRoundPlan().get(round).getSector();
-			if (ts.equals("H")) {
-				toScramble.add(t);
-			}
-		}
-		
-		System.out.println("xx shuffling");
-		Collections.shuffle(toScramble, new Random(System.currentTimeMillis()));
-
-		int location = 1;
-		for (Team t: toScramble) {
-			t.getRoundPlan().get(round).setLocation(location++);
-		}
-		System.out.println("shuffling on H - done");
-	}
-	
 	
 	/*
 	 
@@ -753,23 +758,60 @@ public class Contest {
 		    {"BP", "BR", "BZ", "AP", "AR", "AZ"},           
 		};
 	
+	String refereeModelTemplate[][] = {
+			{"AP", "AZ", "BP", "BZ"},
+			{"BZ", "BP", "AZ", "AP"},                     
+		    {"AZ", "AP", "BZ", "BP"},           
+		    {"BP", "BZ", "AP", "AZ"},           
+		};
 	
 	private void createPlan(Team t, int teamIndex) throws ContestDrawException {
 
 		ArrayList<Round> roundPlan = t.getRoundPlan();
-		int group = teamIndex % template[0].length;   // all rounds has to have equal number of groups, e.g. I can take the first one.
+		// all rounds has to have equal number of groups, e.g. I can take the first one.
+		int group = (REFEREE_MODEL ? teamIndex % refereeModelTemplate[0].length : teamIndex % template[0].length);   
 		
 		for (int roundNumber = 0; roundNumber < NUM_ROUNDS; roundNumber++) {
 			Round r = new Round(roundNumber);
-			r.setSector(template[roundNumber][group].substring(0,1));
-			r.setRole(template[roundNumber][group].substring(1,2));
+			
+			String sector = null;
+			String roleInSector = null;
+			
+			if (REFEREE_MODEL) {
+				sector = refereeModelTemplate[roundNumber][group].substring(0,1);
+				roleInSector = refereeModelTemplate[roundNumber][group].substring(1,2); 
+			}
+			else {
+				sector = template[roundNumber][group].substring(0,1);
+				roleInSector = template[roundNumber][group].substring(1,2); 
+			}
+			
+			r.setSector(sector);
+			r.setRole(roleInSector);
 			roundPlan.set(roundNumber, r);
 		}
-		
-		
-
 	}
-	
+
+	String refereeTemplate[][] = {
+			{"A", "B"},
+			{"B", "A"},                     
+		    {"A", "B"},           
+		    {"B", "A"},           
+		};
+
+	private void createPlanForReferee(Team t, int teamIndex) throws ContestDrawException {
+
+		ArrayList<Round> roundPlan = t.getRoundPlan();
+		// all rounds has to have equal number of groups, e.g. I can take the first one.
+		int group = teamIndex % 2;   
+		
+		for (int roundNumber = 0; roundNumber < NUM_ROUNDS; roundNumber++) {
+			Round r = new Round(roundNumber);
+			r.setSector(refereeTemplate[roundNumber][group]);
+			r.setRole("R");
+			roundPlan.set(roundNumber, r);
+		}
+	}
 	
 	private Boats findBoat(Iterator<Boats> iter, int round, String sector, int location) {
 
@@ -886,6 +928,14 @@ public class Contest {
 
 		Comparator<Result> helperComparator = new RoundResultsComparator();
 		
+		int tms = 0;
+		for (Team t: teams) {
+			if (!t.isReferee())
+				tms++;
+		}
+		
+		int maxGroupSize = tms / 2;  // teams without referees div by two rounds 
+		
 		// final order number assignments
 		for (String sector: new String[] {"A", "B", "H"}) {
 
@@ -910,7 +960,7 @@ public class Contest {
 						}
 					}
 					else {
-						res.setOrderPoints(teams.size() / NUM_ROUNDS * 2);  // because each team is 2x in the sector as front and rear
+						res.setOrderPoints(maxGroupSize);
 					}
 					order++;
 				}
@@ -961,6 +1011,13 @@ public class Contest {
 		}
 
 		for (Team t: teams) {
+			
+			if (REFEREE_MODEL && t.isReferee()) 
+				continue;
+
+			if (t.isDummy()) 
+				continue;
+			
 			
 			FinalResult fr = new FinalResult();
 			fr.setTeamId(t.getId());
@@ -1024,7 +1081,7 @@ public class Contest {
 			
 			fr.calculateSummary();
 
-			if (checkPoint > NUM_ROUNDS - 1) {
+			if (checkPoint > (REFEREE_MODEL ? NUM_ROUNDS : NUM_ROUNDS - 1)) {
 				// something is very wrong
 				throw new RuntimeException("CheckPoint failed on team " + t + ". More that " + (NUM_ROUNDS - 1) + " in round results.");
 			}
