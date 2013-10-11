@@ -35,13 +35,15 @@ import org.fc.entity.report.Boats;
  */
 public class Contest {
 
-	public static final String CONTEST_DATE = "13.10.2012";
+	public static final String CONTEST_DATE = "12.10.2013";
 	public static final String YEAR = CONTEST_DATE.substring(CONTEST_DATE.lastIndexOf(".") + 1);  // for reporting
 	public static final String FISH_TYPE = "Pd";
 	public static final String SECTOR = "A";
 	public static final int ROUND = 1;
 	public static final int NUM_TRIES = 30;
-	
+	public static final int MAX_TEAMS = 60;
+	public static final int TEAM_MODULUS = 3;
+
 	private int NUM_ROUNDS;
 	
 	private Long dataSeq = 1L;
@@ -444,16 +446,21 @@ public class Contest {
 		
 	}
 	
+	
 	/**
 	 * Draw will delete all catch data and scramble all teams.
 	 */
 	public void draw() throws ContestDrawException {
 		
-		if (teams.size() % 6 != 0) {
-			throw new ContestDrawException("Počet súťažiacich musí byť deliteľný číslom 6.\nAktuálny počet je však " + teams.size());
+		
+		
+		if (teams.size() % TEAM_MODULUS != 0) {
+			throw new ContestDrawException("Počet súťažiacich musí byť deliteľný číslom " + TEAM_MODULUS
+					+ ".\nAktuálny počet je však " + teams.size());
 		}
 		else if (teams.size() > 60) {
-			throw new ContestDrawException("Počet súťažiacich nesmie byť väčší ako 60.\nAktuálny počet je však " + teams.size());
+			throw new ContestDrawException("Počet súťažiacich nesmie byť väčší ako " + MAX_TEAMS
+					+ ".\nAktuálny počet je však " + teams.size());
 		}
 		
 		int count = NUM_TRIES;
