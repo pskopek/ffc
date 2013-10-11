@@ -159,8 +159,8 @@ public class Contest {
 		XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
 		
 		
-		XMLStreamWriter xmlw = 
-		         xmlof.createXMLStreamWriter(new FileOutputStream(fileName));
+		XMLStreamWriter xmlw = new com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter(
+		         xmlof.createXMLStreamWriter(new FileOutputStream(fileName)));
 		
 		
 		xmlw.writeStartDocument();
