@@ -583,6 +583,9 @@ public class Contest {
 		
 	}
 	
+	private void checkBoatForTheSameOrganisation() {
+		
+	}
 	
 	private Team[] generatePermutation(ArrayList<Team> teamList) throws ContestDrawException {
 
