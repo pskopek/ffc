@@ -583,14 +583,9 @@ public class Contest {
 		
 	}
 	
-	private void checkBoatForTheSameOrganisation() {
-		
-	}
-	
 	private Team[] generatePermutation(ArrayList<Team> teamList) throws ContestDrawException {
 
-		
-		Collections.shuffle(teamList);
+		Collections.shuffle(teamList, new Random(System.currentTimeMillis()));
 		
 		Team[] teams = new Team[teamList.size()];
 		return teamList.toArray(teams);
