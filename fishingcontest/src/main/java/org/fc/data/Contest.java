@@ -204,6 +204,7 @@ public class Contest {
 			xmlw.writeAttribute("dummy", Boolean.toString(t.isDummy()));
 			xmlw.writeAttribute("disq", Boolean.toString(t.isDisqualified()));
 			xmlw.writeAttribute("fee", Integer.toString(t.getFee()));
+			xmlw.writeAttribute("present", Boolean.toString(t.isPresent()));
 		
 			writeRoundPlan(xmlw, t);
 			writeRoundGain(xmlw, t);
@@ -380,6 +381,9 @@ public class Contest {
 				t.setDummy(Boolean.parseBoolean(val));
 			}
 			else if (attr.equals("disq")) {
+				t.setDisqualified(Boolean.parseBoolean(val));
+			}
+			else if (attr.equals("present")) {
 				t.setDisqualified(Boolean.parseBoolean(val));
 			}
 			else if (attr.equals("fee")) {
