@@ -6,12 +6,12 @@ package org.fc.data;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.TreeSet;
 
 import javax.xml.stream.XMLInputFactory;
@@ -501,7 +501,7 @@ public class Contest {
 		}
 		
 		
-		Collections.shuffle(realTeams, new Random(System.currentTimeMillis()));
+		Collections.shuffle(realTeams, new SecureRandom());
 		
 		// add dummy teams at the end of the team lists
 		realTeams.addAll(dummyTeams);
@@ -589,7 +589,7 @@ public class Contest {
 	
 	private Team[] generatePermutation(ArrayList<Team> teamList) throws ContestDrawException {
 
-		Collections.shuffle(teamList, new Random(System.currentTimeMillis()));
+		Collections.shuffle(teamList, new SecureRandom());
 		
 		Team[] teams = new Team[teamList.size()];
 		return teamList.toArray(teams);
@@ -609,7 +609,8 @@ public class Contest {
 			
 			createPlan(t, teamIndex);
 			
-			System.out.println(t.getPlanAsText());
+			//System.out.println(t.getPlanAsText());
+			System.out.println(t);
 			
 		}
 		
@@ -627,12 +628,7 @@ public class Contest {
 		
 		for (int round = 0; round < NUM_ROUNDS; round++) {
 			for (String sector: new String[] {"A","B"}) {
-				ArrayList<Team> front = new ArrayList<Team>();
-				ArrayList<Team> rear = new ArrayList<Team>();
-				ArrayList<Team> referee = new ArrayList<Team>();
-
-				fillLists(round, sector, front, rear, referee);
-				assignBoats(round, front, rear, referee);
+				assignBoats(round, sector);
 			}
 			
 			// sector H needs locations too
@@ -642,8 +638,13 @@ public class Contest {
 		
 	}
 	
-	private void assignBoats(int round, ArrayList<Team> front, ArrayList<Team> rear, ArrayList<Team> referee) throws ContestDrawException {
-		System.out.println("assignBoats " + round);
+	private void assignBoats(int round, String sector) throws ContestDrawException {
+		
+		ArrayList<Team> front = new ArrayList<Team>();
+		ArrayList<Team> rear = new ArrayList<Team>();
+		ArrayList<Team> referee = new ArrayList<Team>();
+
+		fillLists(round, sector, front, rear, referee);
 		
 		Team[] pf = generatePermutation(front);
 		Team[] pr = generatePermutation(rear);
@@ -678,6 +679,8 @@ public class Contest {
 			pf[i].getRoundPlan().get(round).setLocation(boat);
 			pr[i].getRoundPlan().get(round).setLocation(boat);
 			re[i].getRoundPlan().get(round).setLocation(boat);
+			System.out.print("R:" + round + " S:" + sector + " B:" + boat);
+			System.out.println("  (" + pf[i].getName() + " - " + re[i].getName() + " - " + pr[i].getName() + ")");
 			boat++;
 		}
 		
@@ -724,7 +727,7 @@ public class Contest {
 		}
 		
 		System.out.println("xx shuffling");
-		Collections.shuffle(toScramble, new Random(System.currentTimeMillis()));
+		Collections.shuffle(toScramble, new SecureRandom());
 
 		int location = 1;
 		for (Team t: toScramble) {
