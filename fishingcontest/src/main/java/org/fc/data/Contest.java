@@ -28,6 +28,8 @@ import org.fc.entity.Result;
 import org.fc.entity.Round;
 import org.fc.entity.Team;
 import org.fc.entity.report.Boats;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author pskopek
@@ -35,6 +37,8 @@ import org.fc.entity.report.Boats;
  */
 public class Contest {
 
+	public static final Logger log = LoggerFactory.getLogger(Contest.class);
+	
 	public static final String CONTEST_DATE = "12.10.2013";
 	public static final String YEAR = CONTEST_DATE.substring(CONTEST_DATE.lastIndexOf(".") + 1);  // for reporting
 	public static final String FISH_TYPE = "Pd";
@@ -292,12 +296,12 @@ public class Contest {
 				else if (path.equals("/contest/dataseq")) {
 					dataSeq = Long.parseLong(xmlr.getElementText());
 					path = path.substring(0, path.lastIndexOf("/"));
-					System.out.println("dataseq="+dataSeq);
+					log.debug("dataseq={}", dataSeq);
 				}
 				else if (path.equals("/contest/numRounds")) {
 					NUM_ROUNDS = Integer.parseInt(xmlr.getElementText());
 					path = path.substring(0, path.lastIndexOf("/"));
-					System.out.println("NUM_ROUNDS=" + NUM_ROUNDS);
+					log.debug("NUM_ROUNDS={}", NUM_ROUNDS);
 				}
 				else if (path.equals("/contest/catched/catch")) {
 					loadCatch(xmlr);
@@ -472,7 +476,7 @@ public class Contest {
 			count--;
 			try {
 				singleDraw();
-				System.out.println("Vylosovane na " + (NUM_TRIES - count));
+				log.info("Vylosovane na {}", NUM_TRIES - count);
 				break;
 			}
 			catch (ContestDrawException e) {
@@ -485,7 +489,7 @@ public class Contest {
 	}
 	
 	private void singleDraw() throws ContestDrawException {
-		System.out.println("singleDraw");
+		log.debug("singleDraw");
 		
 		ArrayList<Team> realTeams = new ArrayList<Team>();
 		ArrayList<Team> dummyTeams = new ArrayList<Team>();
@@ -517,8 +521,8 @@ public class Contest {
 				int dummy = realTeams.size() - numDummies + i;
 				int real = realTeams.size() - realTeams.size() / (NUM_ROUNDS * 2) - 1 - i; 
 				
-				System.out.println("swapping " +  dummy + " <-> " + real);
-				System.out.println("swapping " +  realTeams.get(dummy) + " <-> " + realTeams.get(real));
+				log.debug("swapping {}  <-> {}", dummy, real);
+				log.debug("swapping {}  <-> {}", realTeams.get(dummy), realTeams.get(real));
 				
 				Collections.swap(realTeams, dummy, real);
 				
@@ -601,7 +605,7 @@ public class Contest {
 		
 		teams = new ArrayList<Team>(perm.length);
 		
-		System.out.println("Before sitting order");
+		log.debug("Before sitting order");
 		for (int teamIndex = 0; teamIndex < perm.length; teamIndex++) {
 			Team t = perm[teamIndex];
 			teams.add(t);
@@ -609,9 +613,7 @@ public class Contest {
 			
 			createPlan(t, teamIndex);
 			
-			//System.out.println(t.getPlanAsText());
-			System.out.println(t);
-			
+			log.debug("{}", t);
 		}
 		
 
@@ -679,8 +681,7 @@ public class Contest {
 			pf[i].getRoundPlan().get(round).setLocation(boat);
 			pr[i].getRoundPlan().get(round).setLocation(boat);
 			re[i].getRoundPlan().get(round).setLocation(boat);
-			System.out.print("R:" + round + " S:" + sector + " B:" + boat);
-			System.out.println("  (" + pf[i].getName() + " - " + re[i].getName() + " - " + pr[i].getName() + ")");
+			log.debug("R:{} S:{} B:{} ({} - {} - {})", round, sector, boat, pf[i].getName(), re[i].getName(), pr[i].getName());
 			boat++;
 		}
 		
@@ -715,7 +716,7 @@ public class Contest {
 	
 	private void scrambleTeamsOnH(int round) {
 		
-		System.out.println("scrambling on H " + round);
+		log.debug("scrambling on H {}", round);
 		
 		ArrayList<Team> toScramble = new ArrayList<Team>(teams.size() / NUM_ROUNDS);
 		
@@ -726,14 +727,14 @@ public class Contest {
 			}
 		}
 		
-		System.out.println("xx shuffling");
+		log.debug("xx shuffling");
 		Collections.shuffle(toScramble, new SecureRandom());
 
 		int location = 1;
 		for (Team t: toScramble) {
 			t.getRoundPlan().get(round).setLocation(location++);
 		}
-		System.out.println("shuffling on H - done");
+		log.debug("shuffling on H - done");
 	}
 	
 	
@@ -1039,12 +1040,6 @@ public class Contest {
 			
 			
 		}
-
-		/*
-		System.out.println("Before sort:");
-		for (FinalResult fr: finalResults)
-			System.out.println(fr);
-		*/
 
 		// delete dummies from final results
 		// and possible non-registered guys (official Slovak LRU mucha competitor)

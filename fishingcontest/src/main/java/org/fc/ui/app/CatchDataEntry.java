@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.TableViewer;
 import org.fc.data.Contest;
 import org.fc.entity.Catch;
 import org.fc.entity.Team;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.eclipse.core.databinding.DataBindingContext;
 import org.eclipse.jface.databinding.viewers.ObservableListContentProvider;
 import org.eclipse.core.databinding.observable.map.IObservableMap;
@@ -38,6 +40,9 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.ModifyEvent;
 
 public class CatchDataEntry extends Shell {
+	
+	public static final Logger log = LoggerFactory.getLogger(CatchDataEntry.class);
+	
 	private DataBindingContext m_bindingContext;
 	private Table tableTeam;
 	private Table tableCatch;
@@ -289,7 +294,7 @@ public class CatchDataEntry extends Shell {
 					r = Integer.parseInt(txtDefaultRound.getText());
 				}
 				catch (Exception ex) {
-					System.out.println("Error in parsing round " + ex);
+					log.error("Error in parsing round", ex);
 				}
 				c.setRound(r);
 				c.setSector(txtDefaultSector.getText());
