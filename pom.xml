@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.fc</groupId>
     <artifactId>fishingcontest</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1.Final</version>
     <name>Fishing Contest</name>
     <properties>
         <eclipse.version>4.3</eclipse.version>
