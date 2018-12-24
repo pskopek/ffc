@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.entity;
 
@@ -9,51 +9,51 @@ package org.fc.entity;
  */
 public class Round {
 
-	private int round;
-	private String sector;  // A,B 
-	private String role;    // Rozhodca, Prednik, Zadak
-	
-	private int location; // can be used as boat number or location number in cases of dam sector 
+    private int round;
+    private String sector;  // A,B
+    private String role;    // Rozhodca, Prednik, Zadak
 
-	public Round(int round) {
-		this.round = round;
-	}
-	
-	public int getRound() {
-		return round;
-	}
+    private int location; // can be used as boat number or location number in cases of dam sector
 
-	public void setRound(int round) {
-		this.round = round;
-	}
+    public Round(int round) {
+        this.round = round;
+    }
 
-	public String getSector() {
-		return sector;
-	}
+    public int getRound() {
+        return round;
+    }
 
-	public void setSector(String sector) {
-		this.sector = sector;
-	}
+    public void setRound(int round) {
+        this.round = round;
+    }
 
-	public String getRole() {
-		return role;
-	}
+    public String getSector() {
+        return sector;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public void setSector(String sector) {
+        this.sector = sector;
+    }
 
-	public int getLocation() {
-		return location;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setLocation(int location) {
-		this.location = location;
-	}
-	
-	@Override
-	public String toString() {
-		return "(" + round + ":" + sector + ":" + role + ":" + location + ")";
-	}
-	
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public int getLocation() {
+        return location;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    @Override
+    public String toString() {
+        return "(" + round + ":" + sector + ":" + role + ":" + location + ")";
+    }
+
 }

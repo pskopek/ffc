@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package yaf.share.exceptions;
 
@@ -8,35 +8,35 @@ package yaf.share.exceptions;
  *
  */
 public class ReportException extends Exception {
-  
-  static final long serialVersionUID = 140056450906375857L;
-  
-  /**
-   * 
-   */
-  public ReportException() {
-  }
 
-  /**
-   * @param message
-   */
-  public ReportException(String message) {
-    super(message);
-  }
+    static final long serialVersionUID = 140056450906375857L;
 
-  /**
-   * @param cause
-   */
-  public ReportException(Throwable cause) {
-    super(cause);
-  }
+    /**
+     *
+     */
+    public ReportException() {
+    }
 
-  /**
-   * @param message
-   * @param cause
-   */
-  public ReportException(String message, Throwable cause) {
-    super(message, cause);
-  }
+    /**
+     * @param message
+     */
+    public ReportException(String message) {
+        super(message);
+    }
+
+    /**
+     * @param cause
+     */
+    public ReportException(Throwable cause) {
+        super(cause);
+    }
+
+    /**
+     * @param message
+     * @param cause
+     */
+    public ReportException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.data;
 
@@ -10,7 +10,7 @@ package org.fc.data;
  */
 public class NonRegistered {
 
-	public static final Integer[] nonRegisteredList = new Integer[] {
-	};  
-	
+    public static final Integer[] nonRegisteredList = new Integer[]{
+    };
+
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.entity;
 
@@ -8,9 +8,9 @@ package org.fc.entity;
  *
  */
 public class Gain {
-	
-	public int fish;
-	public int CIPS;
-	
+
+    public int fish;
+    public int CIPS;
+
 
 }

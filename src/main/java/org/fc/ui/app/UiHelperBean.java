@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.ui.app;
 
@@ -10,16 +10,16 @@ import org.fc.entity.Team;
  *
  */
 public class UiHelperBean {
-	
-	private Team actualTeam;
 
-	public Team getActualTeam() {
-		return actualTeam;
-	}
+    private Team actualTeam;
 
-	public void setActualTeam(Team actualTeam) {
-		this.actualTeam = actualTeam;
-	}
-	
-	
+    public Team getActualTeam() {
+        return actualTeam;
+    }
+
+    public void setActualTeam(Team actualTeam) {
+        this.actualTeam = actualTeam;
+    }
+
+
 }

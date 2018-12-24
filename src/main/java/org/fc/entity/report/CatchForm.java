@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.entity.report;
 
@@ -8,13 +8,13 @@ package org.fc.entity.report;
  *
  */
 public class CatchForm {
-	
-	public String id;
-	public String name;
-	public String organisation;
-	public String round;
-	public String sector;
-	public String referee;
-	public String location;
+
+    public String id;
+    public String name;
+    public String organisation;
+    public String round;
+    public String sector;
+    public String referee;
+    public String location;
 
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.fc.ui.app;
 
@@ -15,29 +15,29 @@ import org.fc.entity.Team;
  */
 public class TeamFilter extends ViewerFilter {
 
-	private String searchString;
-	
-	public void setSearchText(String s) {
-		searchString = ".*" + s.toLowerCase(Locale.forLanguageTag("sk")) + ".*";
-	}
-	
-	
-	/* (non-Javadoc)
-	 * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
-	 */
-	@Override
-	public boolean select(Viewer viewer, Object parentElement, Object element) {
-		
-	    if (searchString == null || searchString.length() == 0) {
-	        return true;
-	    }
-	    
-	    Team t = (Team) element;
-	    if (t.getSearchField().matches(searchString)) {
-	      return true;
-	    }
-	    
-		return false;
-	}
+    private String searchString;
+
+    public void setSearchText(String s) {
+        searchString = ".*" + s.toLowerCase(Locale.forLanguageTag("sk")) + ".*";
+    }
+
+
+    /* (non-Javadoc)
+     * @see org.eclipse.jface.viewers.ViewerFilter#select(org.eclipse.jface.viewers.Viewer, java.lang.Object, java.lang.Object)
+     */
+    @Override
+    public boolean select(Viewer viewer, Object parentElement, Object element) {
+
+        if (searchString == null || searchString.length() == 0) {
+            return true;
+        }
+
+        Team t = (Team) element;
+        if (t.getSearchField().matches(searchString)) {
+            return true;
+        }
+
+        return false;
+    }
 
 }
