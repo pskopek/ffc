@@ -162,10 +162,11 @@ public class Contest {
 
         XMLOutputFactory xmlof = XMLOutputFactory.newInstance();
 
+// TODO: find new way of indenting xml stream writer
+//  XMLStreamWriter xmlw = new com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter(
+//                xmlof.createXMLStreamWriter(new FileOutputStream(fileName)));
 
-        XMLStreamWriter xmlw = new com.sun.xml.internal.txw2.output.IndentingXMLStreamWriter(
-                xmlof.createXMLStreamWriter(new FileOutputStream(fileName)));
-
+        XMLStreamWriter xmlw = xmlof.createXMLStreamWriter(new FileOutputStream(fileName));
 
         xmlw.writeStartDocument();
         xmlw.writeStartElement("contest");
